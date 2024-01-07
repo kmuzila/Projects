@@ -1,0 +1,122 @@
+https://tinyurl.com/acnh-sheet
+"THIS IS NOT THE PLACE TO REQUEST EDIT ACCESS. If you want to help, join our Discord using the link below."
+"Hi, welcome to the item spreadsheet for ACNH!
+
+Update 3/18: 1.9.0 data is in the public sheet. The season/events tab has also been refactored a bit. It is not currently a breaking change, but please take a look and share your feedback if you use it as the next big sheet update will likely ratify it.
+
+Update 02/26: Added 1.8.0 items.
+
+Update 02/01: Added Setsubun event, added new columns to account for hemisphere-dependent icons, fixed alphabetical sorting of certain tabs, general fixes all around.
+
+
+The purpose of our spreadsheet is to create a complete collection of data on items, villagers, achievements, and more! We fully welcome the use of our data for creators to make websites or applications from for the betterment of the Animal Crossing community. If you use our data for an app or site, please provide a link back to the spreadsheet on your page, and contact us to get your name added to the list of partners."
+"Spreadsheet Discord (report issues, find resources, or stop by and say hi!)"
+Cool Projects using our data
+"Websites:
+- https://nookipedia.com/ 
+- https://nookplaza.net/ 
+- https://nookazon.com/ 
+- https://www.tanukiforest.com/ 
+- https://dodocodes.com/ 
+- https://www.tradernooks.com/ 
+- https://www.almanook.me/ 
+- https://nookdb.io/ 
+- https://nook.exchange/ 
+- https://ac-catalog.herokuapp.com/ 
+- https://villagers.club/ 
+- https://acnh.gamerush.gg/ 
+- https://icebr.art/ 
+- https://www.nooksworkbench.com/ 
+- https://nookempire.com/ 
+- https://nook.center/ 
+- https://gamefaqs.gamespot.com/catalog/acnh 
+- https://gamefaqs.gamespot.com/switch/248082-animal-crossing-new-horizons/faqs/78225 
+- https://nookhelper.com/ 
+- https://dodo.ij.rs/ 
+- https://blatherscritterpedia.herokuapp.com/ 
+- https://journalcrossing.com/ 
+- http://acnhgifts.anvil.app/ 
+- http://www.acnhdatabase.me/ 
+- https://nooksisland.com/ 
+- https://www.horizons-fan.fr/ 
+- http://www.animalcrossingcommunity.com/ 
+- https://nookea.com/ 
+- animalcrossinglife.com/ 
+- https://catalogue.ac/ "
+"Mobile apps:
+- https://play.google.com/store/apps/details?id=com.dodocodes.mobile
+- https://apps.apple.com/us/app/dodocodes/id1512463462
+- https://play.google.com/store/apps/details?id=com.hangodjin.animal_crossing_guide
+- http://ios.acnh.guide/
+- https://play.google.com/store/apps/details?id=dev.genesy.animalcrossingnhguide
+- https://nookstore.me/
+- https://play.google.com/store/apps/details?id=me.acnh.companion
+- https://play.google.com/store/apps/details?id=net.tnrd.critters
+- https://apps.apple.com/us/app/acnh-travel-guide/id1502818559
+- https://play.google.com/store/apps/details?id=com.wegner.horizonpedia
+https://apps.apple.com/us/app/horizonpedia/id1514592054#?platform=iphone
+- https://play.google.com/store/apps/details?id=com.csven.acnhplanner&hl=en
+- https://play.google.com/store/apps/details?id=com.nookea"
+"APIs & Tools:
+- https://github.com/NooksBazaar/google-sheets-to-json
+- SuperSpazzy's room render tool
+- https://github.com/wchill/ACNHAutoCataloger
+- api.nookdata.net
+- https://acnh.tnrd.net/
+- https://acnhapi.com
+- https://github.com/Norviah/animal-crossing
+- https://github.com/Norviah/acnh-images
+- https://twitter.com/catalogscanner
+- https://api.nookipedia.com
+
+Discord bots:
+- https://github.com/ChloeLong/Blathers-Discord-Bot
+- https://github.com/Corentints/coco-discord-bot"
+Sources
+All images (Credit to ElChicoEevee and Alexis)
+All item names (Credit to imthe666st)
+Item translations (Maintained by Alexis)
+Villager House Exteriors (Rendered by SuperSpazzy)
+Special Thanks <3
+"A huge THANK YOU to Ninji for all their work on reverse-engineering the ACNH code!! Their BCSV parsing code was a huge boost in our ability to verify and add data straight from the game files to this spreadsheet, and it wouldn't have grown the way it has without that.
+
+You can find their Twitter here: https://twitter.com/_Ninji
+and their ACNH Ghidra & parsing scripts here: https://github.com/Treeki/CylindricalEarth"
+Contributors
+"6480
+noizhub
+Ricky
+chaiinchomp
+saberslime
+robotic_scarab
+mollumisc
+sunmarsh 
+kyrokey 
+obstinateRixatrix
+jackiwi
+Zalex
+SuperHamster
+kait
+hyuum
+Azarro"
+"Czarcasm
+cinnamon_swirlix
+astronomyfortwo
+Welcius
+glowtopia
+BriKun
+Alyrei
+dodocodes.com
+StevieCoops
+sneeze
+Shiny190
+TwistedPeach
+LavaToaster
+capstone
+vmario
+rocklamp
+Aeon"
+Abbreviations/Spreadsheet Help
+"NFS = Not for sale
+NA = Not available or unsellable, you must trash items with NA in the sell tab instead of selling
+VFX = Visual effects for wallpaper and flooring, such as animation"

@@ -1,0 +1,151 @@
+Name,Image,DIY,Buy,Sell,Color 1,Color 2,Size,Size Category,Exchange Price,Exchange Currency,Source,Source Notes,Season/Event,Season/Event Exclusive,HHA Base Points,HHA Concept 1,HHA Concept 2,HHA Series,Tag,Catalog,Version Added,Unlocked?,Filename,Internal ID,Unique Entry ID
+aluminum rug,,No,1500,375,Gray,Gray,3x2,Medium,NA,NA,Saharah,,NA,NA,253,garden,outdoors,None,Slender Rugs,For sale,1.0.0,Yes,RugRectAluminumM00,7356,vFkuGbx8Sh2MDLEsq
+apple rug,,Yes,NFS,1200,Red,Red,3x3,Medium,NA,NA,Crafting,,NA,NA,103,fancy,child's room,fruits,Fruit Rugs,Not for sale,1.0.0,Yes,RugOtherAppleM00,7327,5GsjYsaz9NDtQ6QFB
+Bell-bag rug,,No,NFS,6000,Yellow,Yellow,3x3,Medium,1200,Nook Miles,Nintendo; Nook Miles Redemption,Mailed to players after the 1.2.0 update in a letter from Nintendo,NA,NA,151,expensive,None,None,Park Rugs,Not for sale,1.2.0,Yes,RugOtherBellM00,12214,KfRapmYKpizqQWzCg
+black blocks rug,,No,1500,375,Black,Gray,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareBlockM03,11104,4kj8FXzMTqvZvqEra
+black wooden-deck rug,,No,1500,375,Black,Black,3x2,Medium,NA,NA,Saharah,,NA,NA,253,outdoors,None,None,Wood Rugs,For sale,1.0.0,Yes,RugRectDeckM03,7382,kQDKkEGfdAjqPxd4w
+black-design kitchen mat,,No,1000,250,Black,Orange,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectNativeKitchenS03,7594,G7CAPiAEpYv6QKbsL
+blue argyle rug,,No,2000,500,Blue,Green,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,expensive,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectArgyleL02,8467,uw8DvCwwBia7ozA72
+blue blocks rug,,No,1500,375,Blue,Blue,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareBlockM01,11102,Mjxd8kenDFZgTFXcm
+blue dotted rug,,No,2000,500,Blue,Blue,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectDotL03,7467,JAAx9zSMrjXKKw2ij
+blue kilim-style carpet,,No,2000,500,Blue,Black,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareKirimL01,9316,MhvdxvmyKtddid2G2
+blue kitchen mat,,No,1000,250,Blue,Blue,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectKitchenS02,8394,SLBDbK365pHRnKE5k
+blue medium round mat,,No,1500,375,Blue,Blue,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleM02,9546,JfLKCbWRz4CozZYpH
+blue message mat,,No,1000,250,Blue,Blue,2x1,Small,NA,NA,Saharah,,NA,NA,253,child's room,None,None,Message Mats,For sale,1.0.0,Yes,RugOtherMessageS01,9310,5grLuDzGkNL4DYk4r
+blue Persian rug,,No,2000,500,Blue,Beige,5x5,Large,NA,NA,Saharah,,NA,NA,253,expensive,living room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquarePersianL01,8035,CDY97qjWg4xG6egyS
+blue shaggy rug,,No,2000,500,Blue,Blue,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareShaggyL02,9564,v4ZJPY2ToZPHXp6KH
+blue small round mat,,No,1000,250,Blue,Blue,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleS02,9549,BxaqCsC7TqwGdHpib
+blue stripes rug,,No,2000,500,Blue,White,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectBorderL02,7533,dAHzKeTqwA9wD2yfa
+blue vinyl sheet,,No,1500,375,Blue,Colorful,3x2,Medium,NA,NA,Saharah,,NA,NA,253,garden,None,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectVinylM01,7404,b8xZjiyqLPWJsgt73
+blue wavy rug,,No,2000,500,Blue,Aqua,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectWaveL02,7458,SbRQxAyR7EZSRBb4j
+blue wedding rug,,No,NFS,375,Aqua,Aqua,3x2,Medium,4,Heart Crystals,Cyrus,,Wedding Season,Yes,437,party,expensive,wedding,Slender Pattern Rugs,Not for sale,1.2.0,Yes,RugRectJuneBrideM00,12462,ghEfAZG8Lt5sb8nt3
+blue-design kitchen mat,,No,1000,250,Blue,Black,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectNativeKitchenS01,7595,DiEHu3wPobZXzhhp8
+botanical rug,,No,2000,500,Green,Green,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectBotanicalL00,7353,nEqsaya7wt6FsWwDC
+brown argyle rug,,No,2000,500,Brown,Yellow,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,expensive,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectArgyleL03,8468,yrQTuyQr2m6axKkr2
+brown kitchen mat,,No,1000,250,Brown,Brown,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectKitchenS00,7341,2ya9gAeftrSe4YSmE
+brown shaggy rug,,No,2000,500,Brown,Brown,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareShaggyL01,9563,cAFej6s3C7T3DYykj
+brown wooden-deck rug,,No,1500,375,Brown,Brown,3x2,Medium,NA,NA,Saharah,,NA,NA,253,outdoors,None,None,Wood Rugs,For sale,1.0.0,Yes,RugRectDeckM00,7323,MSPQjkRRMRGNRTeEt
+Bunny Day rug,,Yes,NFS,2400,Colorful,Colorful,3x3,Medium,NA,NA,Crafting,,Bunny Day (ready days); Bunny Day,Yes,351,fancy,child's room,Bunny Day,Icon Rugs,Not for sale,1.1.0,Yes,RugOtherEasterM00,7546,6tC8Zhswobdah6ftE
+cherry rug,,Yes,NFS,1200,Red,Red,3x3,Medium,NA,NA,Crafting,,NA,NA,103,fancy,child's room,fruits,Fruit Rugs,Not for sale,1.0.0,Yes,RugOtherCherryM00,7328,R9Bxb8FQw7Fj2YuCa
+Cinnamoroll rug,,No,1500,375,White,Aqua,3x3,Medium,NA,NA,Nook Shopping Promotion,Scan the associated Sanrio amiibo card,NA,NA,201,fancy,None,Cinnamoroll,Sanrio Rugs,Not in catalog,1.9.0,Yes,RugOtherCinnamonM00,12288,QGLTyMNpsBoKRTcZ7
+colorful vinyl sheet,,No,1500,375,Colorful,Colorful,3x2,Medium,NA,NA,Saharah,,NA,NA,253,garden,None,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectVinylM00,7359,FAAQgrJJM4svoYJb8
+dark bamboo rug,,Yes,NFS,960,Brown,Brown,3x2,Medium,NA,NA,Crafting,,NA,NA,103,harmonious,None,None,Wood Rugs,Not for sale,1.0.0,Yes,RugRectBambooM01,11114,yC3qR56GTSs3PZuJi
+Earth rug,,No,1500,375,Blue,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,space,child's room,None,Icon Rugs,For sale,1.0.0,Yes,RugRoundEarthM00,7357,RPF9JQeXN8cD4afuE
+festive rug,,Yes,NFS,1500,Brown,Colorful,4x4,Large,NA,NA,Crafting,,ornaments,Yes,201,party,fancy,festive,Pattern Rugs,Not for sale,1.6.0,Yes,RugSquareChristmasL00,7544,gtnhB8Je9YTRgmJgE
+fish rug,,No,NFS,375,Aqua,Aqua,3x3,Medium,NA,NA,C.J.,,Fishing Tourney,Yes,501,ocean,child's room,None,Icon Rugs,Not for sale,1.0.0,Yes,RugOtherFishM00,7361,iWb2Ca8YMDYnpyDrx
+fluffy rug,,No,1500,375,White,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Icon Rugs,For sale,1.0.0,Yes,RugOtherCloudM00,7329,DKPzh943uZYKHKsX7
+football rug,,No,2000,500,Brown,White,3x3,Medium,NA,NA,Nook Shopping Seasonal,,Big Game Celebration (2),Yes,,fitness,child's room,None,,Not in catalog,1.7.0,Yes,RugOtherFootballM00,13904,r5zaZS3Ar6oHTkTGM
+fossil rug,,No,1500,375,Purple,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Park Rugs,For sale,1.0.0,Yes,RugOtherFossilM00,7366,P2tKuDsb8sxfpKXh3
+green checked rug,,No,2000,500,Green,Purple,4x4,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareCheckQuiltL03,7464,hAYpTXLShJh7p5gcB
+green kilim-style carpet,,No,2000,500,Green,Green,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareKirimL02,9314,86w3TxnYsZLSzeX2q
+green kitchen mat,,No,1000,250,Green,Green,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectKitchenS03,8393,QpRcMgKRTNvayFdy9
+green shaggy rug,,No,2000,500,Green,Green,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareShaggyL00,7354,hNWup2nSxzMMsGfyy
+green stripes rug,,No,2000,500,Green,White,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectBorderL03,7534,DEEzqeCYXaxA8i63W
+Hello Kitty rug,,No,1500,375,White,Red,3x3,Medium,NA,NA,Nook Shopping Promotion,Scan the associated Sanrio amiibo card,NA,NA,201,fancy,None,Hello Kitty,Sanrio Rugs,Not in catalog,1.9.0,Yes,RugOtherKittyM00,12291,gk42LeDJJsjsTeGfv
+iron entrance mat,,No,1000,250,Black,Black,2x1,Small,NA,NA,Saharah,,NA,NA,253,shop,expensive,iron,Slender Rugs,For sale,1.0.0,Yes,RugRectIronmatS00,7337,KaHhjd5QbpmmmhkCg
+ivory medium round mat,,No,1500,375,Beige,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleM00,7325,ucw27wEffTFj9DK4v
+ivory simple bath mat,,No,1000,250,Beige,Beige,2x1,Small,NA,NA,Saharah,,NA,NA,253,bathroom,None,None,Slender Rugs,For sale,1.0.0,Yes,RugRectBathmatS00,7333,iFx2DHj9qJsY8vzsT
+ivory small round mat,,No,1000,250,Beige,White,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleS00,7334,8to7AD6FkrkZkaKX5
+Kerokerokeroppi rug,,No,1500,375,Green,Beige,3x3,Medium,NA,NA,Nook Shopping Promotion,Scan the associated Sanrio amiibo card,NA,NA,201,garden,harmonious,Kerokerokeroppi,Sanrio Rugs,Not in catalog,1.9.0,Yes,RugRoundKeroppiM00,12289,smABvGpiNirHZ449q
+Kiki & Lala rug,,No,1500,375,Pink,Aqua,3x3,Medium,NA,NA,Nook Shopping Promotion,Scan the associated Sanrio amiibo card,NA,NA,201,fancy,None,Kiki & Lala,Sanrio Rugs,Not in catalog,1.9.0,Yes,RugOtherKikilalaM00,12290,7t6nDHA4oEok4fjPr
+lacy rug,,No,1500,375,Beige,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,expensive,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundLaceM00,7368,bzWc6Hh3tAnYcgh3f
+ladybug rug,,No,NFS,375,Red,Black,3x3,Medium,NA,NA,Flick,,Bug-Off,Yes,501,fancy,child's room,None,Icon Rugs,Not for sale,1.0.0,Yes,RugRoundLadybirdM00,7360,T7T3r6GJqfhndy5xp
+Lakitu's Cloud rug,,No,1500,375,White,White,3x3,Medium,NA,NA,Nook Shopping Promotion,,Super Mario Bros.,Yes,201,fancy,child's room,Mario,Mario,Not in catalog,1.8.0,Yes,RugOtherMarioBM00,13873,H66iRYRxAHNP8bZdf
+light bamboo rug,,Yes,NFS,2400,Beige,Brown,3x2,Medium,NA,NA,Crafting,,young spring bamboo,Yes,201,harmonious,None,None,Wood Rugs,Not for sale,1.0.0,Yes,RugRectBambooM00,11113,c34AemWJDW8WvYGrm
+magic-circle rug,,No,1500,375,Purple,Purple,3x3,Medium,NA,NA,Saharah,,NA,NA,253,horror,None,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundMagicM00,7367,77PHyfuxLmPTgriT2
+mermaid rug,,Yes,NFS,10360,Aqua,Pink,3x3,Medium,NA,NA,Crafting,,NA,NA,451,ocean,fancy,mermaid,Icon Rugs,Not for sale,1.3.0,Yes,RugOtherMermaidM00,12563,WfJHsYQ4KETP2yDEs
+modern wavy rug,,No,2000,500,Colorful,Colorful,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectWaveL00,7350,tfdJqWZ2ETosBdHem
+Mom's cool kitchen mat,,No,NFS,88,Aqua,Aqua,2x1,Small,NA,NA,Mom,Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere,NA,NA,365,fancy,kitchen,motherly,Kitchen Rugs,Not for sale,1.0.0,Yes,RugRectMomS00,7402,QR6HWdrKgLeoFAkzR
+Mom's lively kitchen mat,,No,NFS,88,Yellow,Yellow,2x1,Small,NA,NA,Mom,Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere,NA,NA,365,fancy,kitchen,motherly,Kitchen Rugs,Not for sale,1.0.0,Yes,RugRectMomS02,9543,MvLXeraTpCoKRqmWA
+Mom's playful kitchen mat,,No,NFS,88,Pink,Pink,2x1,Small,NA,NA,Mom,Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere,NA,NA,365,fancy,kitchen,motherly,Kitchen Rugs,Not for sale,1.0.0,Yes,RugRectMomS01,9542,3F5HHssaHXMit7YMH
+Mom's reliable kitchen mat,,No,NFS,88,Purple,Purple,2x1,Small,NA,NA,Mom,Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere,NA,NA,365,fancy,kitchen,motherly,Kitchen Rugs,Not for sale,1.0.0,Yes,RugRectMomS03,9541,pe2KbbDbmkWPyd56c
+monochromatic dotted rug,,No,2000,500,Black,White,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectDotL00,7349,n7kdsLeGa9sFzPfYR
+monochromatic wavy rug,,No,2000,500,Black,White,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectWaveL01,7456,KEQx7PcEYYP5C8QGW
+moon rug,,No,2000,500,Yellow,Yellow,3x3,Medium,NA,NA,Nook Shopping Seasonal,,Moon-Viewing Day,Yes,201,space,harmonious,None,Shaggy Round Rugs,Not in catalog,1.4.0,Yes,RugRoundMoonM00,13287,ZSc6ADmEcAnG92DWv
+mush rug,,No,1500,375,Red,Red,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,mush,Icon Rugs,For sale,1.0.0,Yes,RugOtherMushM00,7363,deKdNh2bu4udJ5zYx
+My Melody rug,,No,1500,375,Pink,White,3x3,Medium,NA,NA,Nook Shopping Promotion,Scan the associated Sanrio amiibo card,NA,NA,201,fancy,None,My Melody,Sanrio Rugs,Not in catalog,1.9.0,Yes,RugOtherMymelodyM00,12292,yrbMifhEWhbM6A7nv
+natural wooden-deck rug,,No,1500,375,Brown,Brown,3x2,Medium,NA,NA,Saharah,,NA,NA,253,outdoors,None,None,Wood Rugs,For sale,1.0.0,Yes,RugRectDeckM01,7380,4xyhHztk2b3GbRKu6
+Nook Inc. botanical rug,,No,NFS,5000,Yellow,Green,3x3,Medium,1000,Nook Miles,Nook Miles Redemption,,NA,NA,151,fancy,living room,None,Park Rugs,Not for sale,1.1.0,Yes,RugOtherTanukiM00,12325,WiHenFMXuxj7q2rgq
+Nook Inc. rug,,No,NFS,5000,Green,Green,3x3,Medium,1000,Nook Miles,Nook Miles Redemption,,NA,NA,151,fancy,child's room,None,Park Rugs,Not for sale,1.0.0,Yes,RugOtherLeafM00,7364,HFmdcXn43ApSRKdk4
+Nook Inc. silk rug,,No,NFS,3000,Green,Green,4x3,Large,600,Nook Miles,Nook Miles Redemption,,NA,NA,0,facility,shop,None,Park Rugs,Not for sale,1.1.0,Yes,RugRectTanukiL00,12396,XQ72LLzAakWbavKFr
+orange rug,,Yes,NFS,1200,Orange,Orange,3x3,Medium,NA,NA,Crafting,,NA,NA,103,fancy,child's room,fruits,Fruit Rugs,Not for sale,1.0.0,Yes,RugOtherOrangeM00,7330,cXGa9CDpwXcCMzQw2
+oval entrance mat,,No,1000,250,Blue,Blue,2x1,Small,NA,NA,Saharah,,NA,NA,253,living room,None,None,Slender Rugs,For sale,1.0.0,Yes,RugOtherCountryS00,7370,TJaw3inQooLN9DXGt
+peach checked rug,,No,2000,500,Pink,Aqua,4x4,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareCheckQuiltL02,7463,QLtQLYyCeg7A28tzC
+peach rug,,Yes,NFS,1200,Pink,Pink,3x3,Medium,NA,NA,Crafting,,NA,NA,103,fancy,child's room,fruits,Fruit Rugs,Not for sale,1.0.0,Yes,RugOtherPeachM00,7331,tqGgxHpeDfRCGRrjY
+peach stripes rug,,No,2000,500,Pink,White,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectBorderL01,7532,LGhZCR8PgGQJYqST9
+pear rug,,Yes,NFS,1200,Green,Green,3x3,Medium,NA,NA,Crafting,,NA,NA,103,fancy,child's room,fruits,Fruit Rugs,Not for sale,1.0.0,Yes,RugOtherPearM00,7332,hLakk5wPNF2RHRCHR
+pink heart rug,,No,1500,375,Pink,Pink,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Heart Rugs,For sale,1.0.0,Yes,RugOtherHeartM00,7322,TY5kKqhPpxgifmRJF
+pink rose rug,,No,1500,375,Pink,Pink,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,expensive,None,Rose Rug,For sale,1.0.0,Yes,RugOtherRoseM00,7365,adYBsXgG3etWwtsds
+pirate rug,,No,NFS,375,Beige,Beige,3x2,Medium,NA,NA,Gullivarrr,,NA,NA,451,ocean,none,pirate,Slender Pattern Rugs,Not for sale,1.3.0,Yes,RugRectPiratesM00,12564,RPasRWt9A7bb4h4yv
+Pompompurin rug,,No,1500,375,Yellow,Yellow,3x3,Medium,NA,NA,Nook Shopping Promotion,Scan the associated Sanrio amiibo card,NA,NA,201,fancy,None,Pompompurin,Sanrio Rugs,Not in catalog,1.9.0,Yes,RugOtherPurinM00,12293,updiXar2svW2mCdva
+purple heart rug,,No,1500,375,Purple,Pink,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Heart Rugs,For sale,1.0.0,Yes,RugOtherHeartM02,7580,LzB8y9NY5cwZJETQy
+purple Persian rug,,No,2000,500,Purple,Beige,5x5,Large,NA,NA,Saharah,,NA,NA,253,expensive,living room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquarePersianL03,8037,QzKyWFwcBF6DNoMQS
+purple shaggy rug,,No,2000,500,Purple,Purple,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareShaggyL03,9562,jYsKTqR44uCHSGbnE
+red argyle rug,,No,2000,500,Red,Red,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,expensive,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectArgyleL01,8466,JcnvagFXFrtRojuX5
+red blocks rug,,No,1500,375,Red,Red,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareBlockM00,11101,PWaKA8fJZfRLdgBjP
+red carpet,,No,1500,375,Red,Red,3x2,Medium,NA,NA,Saharah,,NA,NA,253,expensive,None,None,Slender Rugs,For sale,1.0.0,Yes,RugRectElegantM00,7348,DrZgYBvviB7CGP3nx
+red dotted rug,,No,2000,500,Red,Red,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectDotL02,7465,6KoyAtx4QA2BuXKea
+red kilim-style carpet,,No,2000,500,Red,Red,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareKirimL00,9313,dhvJNNbRm9qDxXrpJ
+red medium round mat,,No,1500,375,Red,Red,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleM01,9545,Ev2FGNQPGqW8Nn7fk
+red message mat,,No,1000,250,Red,Red,2x1,Small,NA,NA,Saharah,,NA,NA,253,child's room,None,None,Message Mats,For sale,1.0.0,Yes,RugOtherMessageS03,9312,uYJPL9oP3tgpZHNhL
+red Persian rug,,No,2000,500,Red,Beige,5x5,Large,NA,NA,Saharah,,NA,NA,253,expensive,living room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquarePersianL00,7347,ToTG8debi3YH93yqJ
+red rose rug,,No,1500,375,Red,Red,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,expensive,flowers,Rose Rug,For sale,1.0.0,Yes,RugOtherRoseM01,8758,cXt7bSZGo8G4MWZ3x
+red small round mat,,No,1000,250,Red,Red,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleS01,9548,z6C8NBYbSkshNZG7J
+red vinyl sheet,,No,1500,375,Red,Colorful,3x2,Medium,NA,NA,Saharah,,NA,NA,253,garden,None,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectVinylM02,7405,2tPPLjzq42Z8wjtNv
+red wavy rug,,No,2000,500,Red,Yellow,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectWaveL03,7457,pPTXqs45y6k23f62j
+red wedding rug,,No,NFS,375,Red,Red,3x2,Medium,4,Heart Crystals,Cyrus,,Wedding Season,Yes,437,party,expensive,wedding,Slender Pattern Rugs,Not for sale,1.2.0,Yes,RugRectJuneBrideM02,12465,LmxrQZwL5HrEzsHqK
+red-and-blue checked rug,,No,2000,500,Red,Blue,4x4,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareCheckQuiltL00,7343,zrouM9QCzYKg3kBcc
+red-design kitchen mat,,No,1000,250,Red,Black,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectNativeKitchenS00,7340,7KtKd8P5tbGSfG2qZ
+retro dotted rug,,No,2000,500,Green,Green,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectDotL01,7466,29Pm3PcqEJ3nP36sh
+rough rug,,No,1000,250,Brown,Brown,2x1,Small,NA,NA,Saharah,,NA,NA,253,school,facility,None,Slender Rugs,For sale,1.0.0,Yes,RugRectDoormatS00,7324,oEg77tXhJ6GReb7gp
+rubber mud mat,,No,1000,250,Green,Green,2x1,Small,NA,NA,Saharah,,NA,NA,253,school,None,None,Slender Rugs,For sale,1.0.0,Yes,RugRectRubberScraperS00,7339,Er4wGFd53SAq3zsGX
+shamrock rug,,No,1500,375,Green,Green,3x3,Medium,NA,NA,Nook Shopping Seasonal,,Shamrock Day,Yes,201,fancy,None,None,Icon Rugs,Not in catalog,1.8.0,Yes,RugOtherShamrockM00,7547,FcnuoWDXY7oGanq74
+shanty mat,,No,2000,500,Brown,Beige,4x4,Large,NA,NA,Saharah,,NA,NA,253,harmonious,None,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareOldStrawL00,7345,jLR8r3aHpRe4yJyxA
+shell rug,,Yes,NFS,5400,Beige,Pink,3x3,Medium,NA,NA,Crafting,,NA,NA,103,ocean,fancy,shell,Park Rugs,Not for sale,1.0.0,Yes,RugOtherShellM00,7362,kC3KJRKazh5c6m2uN
+simple green bath mat,,No,1000,250,Green,Green,2x1,Small,NA,NA,Saharah,,NA,NA,253,bathroom,None,None,Slender Rugs,For sale,1.0.0,Yes,RugRectBathmatS03,7516,zfRhHqsvfBg5D6CJA
+simple medium avocado mat,,No,1500,375,Green,Green,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM03,7524,9BzJWMCmruohLvY8x
+simple medium black mat,,No,1500,375,Black,Black,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM07,7539,Nmx4FN5RX5LJ2xRF8
+simple medium blue mat,,No,1500,375,Blue,Blue,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM02,7523,7nEjDqYTsZdF3n8Ky
+simple medium brown mat,,No,1500,375,Brown,Brown,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM01,7519,FAqsC7JonfkPt3jc2
+simple medium orange mat,,No,1500,375,Orange,Orange,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM05,7536,Bt6N5gWJJNtdNg8TC
+simple medium purple mat,,No,1500,375,Purple,Purple,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM06,7538,9WryqBnvAMiSF7vJ6
+simple medium red mat,,No,1500,375,Red,Red,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM04,7540,yB22Mz4KP2wbzjYtv
+simple navy bath mat,,No,1000,250,Gray,Gray,2x1,Small,NA,NA,Saharah,,NA,NA,253,bathroom,None,None,Slender Rugs,For sale,1.0.0,Yes,RugRectBathmatS01,7518,AZQdF6gMi89DXP9K3
+simple pink bath mat,,No,1000,250,Pink,Pink,2x1,Small,NA,NA,Saharah,,NA,NA,253,bathroom,None,None,Slender Rugs,For sale,1.0.0,Yes,RugRectBathmatS02,7517,Lqze8wPcmFatBMFDw
+simple small avocado mat,,No,1000,250,Green,Green,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS03,7520,PKfPEbTw8C55Qc5oH
+simple small black mat,,No,1000,250,Black,Black,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS07,7543,uSGDYs7hCuxMBTZbi
+simple small blue mat,,No,1000,250,Blue,Blue,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS02,7521,Q7FSQ4q6Hzt2YihKH
+simple small brown mat,,No,1000,250,Brown,Brown,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS01,7522,aKCpcBCjrn6wWcyw2
+simple small orange mat,,No,1000,250,Orange,Orange,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS05,7541,WomwFGQsQgogZNtQf
+simple small purple mat,,No,1000,250,Purple,Purple,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS06,7542,h7wpDFdwKgJs2BvgG
+simple small red mat,,No,1000,250,Red,Red,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS04,7537,nRakPP7nXacJB3YHX
+sloppy rug,,No,2000,500,Aqua,Aqua,4x4,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Simple Rugs,For sale,1.0.0,Yes,RugOtherSloppyL00,7371,337rrvb9iapfJC4nb
+snowflake rug,,No,1500,375,Aqua,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,freezing cold,fancy,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSnowM00,7346,upNaAkxPwQRHP6NXi
+spooky rug,,No,NFS,2000,Orange,Purple,4x4,Large,NA,NA,Villagers,Trade candy or a lollipop with a villager,Halloween,Yes,231,horror,None,spooky,Pattern Rugs,Not for sale,1.5.0,Yes,RugSquareHalloweenL00,7545,vgzmZDqaGRtrDN7Pv
+summer-shell rug,,Yes,NFS,7200,Aqua,Aqua,3x3,Medium,NA,NA,Crafting,,summer shells,Yes,201,ocean,fancy,None,Park Rugs,Not for sale,1.6.0,Yes,RugOtherShellSnailM00,12217,fBGGF9Cqbudi6cmsk
+sunflower rug,,No,1500,375,Yellow,Brown,3x3,Medium,NA,NA,Nook Shopping Seasonal,,Summer Solstice (northern hemisphere); Summer Solstice (southern hemisphere),Yes,201,fancy,child's room,flowers,Icon Rugs,Not in catalog,1.6.0,Yes,RugOtherSunflowerM00,13596,D8jXWc5Nq678JDmpr
+tatami mat,,No,1500,375,Green,Yellow,3x2,Medium,NA,NA,Saharah,,NA,NA,253,harmonious,None,None,Wood Rugs,For sale,1.0.0,Yes,RugRectTatamiM00,7369,m7efgfNG3HZR6G29s
+tropical rug,,No,1500,375,Green,Beige,3x3,Medium,NA,NA,Saharah,,NA,NA,253,ocean,None,None,Park Rugs,For sale,1.0.0,Yes,RugRoundIslandM00,7358,tjgfDcBRhWQrxhjzk
+Turkey Day rug,,No,NFS,500,Beige,Beige,4x4,Large,NA,NA,Franklin,Reward for giving Franklin the requested ingredients,Turkey Day,Yes,351,party,None,Turkey Day,Pattern Rugs,Not for sale,1.6.0,Yes,RugSquareHarvestL00,13525,S3E3mJ2PfFsqN6FPq
+turquoise heart rug,,No,1500,375,Aqua,Aqua,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Heart Rugs,For sale,1.0.0,Yes,RugOtherHeartM01,7579,MeN8d4a4YKoFc2zDW
+white heart rug,,No,1500,375,White,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Heart Rugs,For sale,1.0.0,Yes,RugOtherHeartM03,7578,ur5qNz9QEkkCEPRDQ
+white message mat,,No,1000,250,White,White,2x1,Small,NA,NA,Saharah,,NA,NA,253,child's room,None,None,Message Mats,For sale,1.0.0,Yes,RugOtherMessageS00,7338,ey5h5kDoaHvTgEdkj
+white rose rug,,No,1500,375,White,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,expensive,flowers,Rose Rug,For sale,1.0.0,Yes,RugOtherRoseM03,8757,fWrizz9CC3Lg8apM2
+white simple medium mat,,No,1500,375,Beige,White,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleM00,7335,vXD2oADv2fg4QRCp6
+white simple small mat,,No,1000,250,Beige,White,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,facility,None,Simple Rugs,For sale,1.0.0,Yes,RugSquareSimpleS00,7336,vhxZi6oAZWm9gxRfK
+white wedding rug,,No,NFS,375,White,White,3x2,Medium,4,Heart Crystals,Cyrus,,Wedding Season,Yes,437,party,expensive,wedding,Slender Pattern Rugs,Not for sale,1.2.0,Yes,RugRectJuneBrideM03,12464,At7cbGksXn6rvhkQr
+white wooden-deck rug,,No,1500,375,White,White,3x2,Medium,NA,NA,Saharah,,NA,NA,253,outdoors,None,None,Wood Rugs,For sale,1.0.0,Yes,RugRectDeckM02,7381,nmBMJkGHnxGdzYzzP
+yellow argyle rug,,No,2000,500,Yellow,Yellow,4x3,Large,NA,NA,Saharah,,NA,NA,253,living room,fancy,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectArgyleL00,7352,TEzohiZZfTSxoSNpd
+yellow blocks rug,,No,1500,375,Yellow,Brown,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareBlockM02,11103,Gb4rwvjZv74CDT8qE
+yellow checked rug,,No,2000,500,Yellow,Green,4x4,Large,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareCheckQuiltL01,7462,GdqeFkwTpKJLFQpyK
+yellow kilim-style carpet,,No,2000,500,Yellow,Beige,5x5,Large,NA,NA,Saharah,,NA,NA,253,living room,None,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquareKirimL03,9315,274gPov62L9zR3onG
+yellow kitchen mat,,No,1000,250,Yellow,Yellow,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectKitchenS01,8395,CyGFnLgFnD3jrgKio
+yellow medium round mat,,No,1500,375,Yellow,Yellow,3x3,Medium,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleM03,9544,TfKNppy5CiswuZGSw
+yellow message mat,,No,1000,250,Yellow,Yellow,2x1,Small,NA,NA,Saharah,,NA,NA,253,child's room,None,None,Message Mats,For sale,1.0.0,Yes,RugOtherMessageS02,9311,6NpR38JASvkZDezYq
+yellow Persian rug,,No,2000,500,Yellow,Beige,5x5,Large,NA,NA,Saharah,,NA,NA,253,expensive,living room,None,Pattern Rugs,For sale,1.0.0,Yes,RugSquarePersianL02,8036,HdsBjfD2ongYrBt5m
+yellow rose rug,,No,1500,375,Yellow,Yellow,3x3,Medium,NA,NA,Saharah,,NA,NA,253,fancy,expensive,flowers,Rose Rug,For sale,1.0.0,Yes,RugOtherRoseM02,8759,jta8sYzY36aqcjp3T
+yellow small round mat,,No,1000,250,Yellow,Yellow,2x2,Small,NA,NA,Saharah,,NA,NA,253,living room,child's room,None,Shaggy Round Rugs,For sale,1.0.0,Yes,RugRoundSimpleS03,9547,FS2ZvZLcRQDHp6hHr
+yellow stripes rug,,No,2000,500,Yellow,White,4x3,Large,NA,NA,Saharah,,NA,NA,253,fancy,child's room,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectBorderL00,7351,mJP9gz2YZAcQsWELE
+yellow vinyl sheet,,No,1500,375,Yellow,Colorful,3x2,Medium,NA,NA,Saharah,,NA,NA,253,garden,None,None,Slender Pattern Rugs,For sale,1.0.0,Yes,RugRectVinylM03,7403,8tMeC24TcYdot9ZuC
+yellow-design kitchen mat,,No,1000,250,Yellow,Black,2x1,Small,NA,NA,Saharah,,NA,NA,253,kitchen,None,None,Kitchen Rugs,For sale,1.0.0,Yes,RugRectNativeKitchenS02,7596,B76hfTkYR2vm96Hfd
+Yoshi's Egg rug,,No,1500,375,Green,White,3x3,Medium,NA,NA,Nook Shopping Promotion,,Super Mario Bros.,Yes,201,fancy,child's room,Mario,Mario,Not in catalog,1.8.0,Yes,RugOtherMarioAM00,13872,CfuABFvYQYNAKQcR6
