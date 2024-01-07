@@ -1,0 +1,47 @@
+"US,?UM",Pacific/Honolulu,Hawaii,Canonical,?10:00,?10:00,northamerica,
+"US,?CA",America/Phoenix,"MST - Arizona (except Navajo), Creston BC",Canonical,?07:00,?07:00,northamerica,
+US,America/Adak,Aleutian Islands,Canonical,?10:00,?09:00,northamerica,
+US,America/Anchorage,Alaska (most areas),Canonical,?09:00,?08:00,northamerica,
+US,America/Atka,,Link,?10:00,?09:00,backward,Link to America/Adak
+US,America/Boise,Mountain - ID (south); OR (east),Canonical,?07:00,?06:00,northamerica,
+US,America/Chicago,Central (most areas),Canonical,?06:00,?05:00,northamerica,
+US,America/Denver,Mountain (most areas),Canonical,?07:00,?06:00,northamerica,
+US,America/Detroit,Eastern - MI (most areas),Canonical,?05:00,?04:00,northamerica,
+US,America/Fort_Wayne,,Link,?05:00,?04:00,backward,Link to America/Indiana/Indianapolis
+US,America/Indiana/Indianapolis,Eastern - IN (most areas),Canonical,?05:00,?04:00,northamerica,
+US,America/Indiana/Knox,Central - IN (Starke),Canonical,?06:00,?05:00,northamerica,
+US,America/Indiana/Marengo,Eastern - IN (Crawford),Canonical,?05:00,?04:00,northamerica,
+US,America/Indiana/Petersburg,Eastern - IN (Pike),Canonical,?05:00,?04:00,northamerica,
+US,America/Indiana/Tell_City,Central - IN (Perry),Canonical,?06:00,?05:00,northamerica,
+US,America/Indiana/Vevay,Eastern - IN (Switzerland),Canonical,?05:00,?04:00,northamerica,
+US,America/Indiana/Vincennes,"Eastern - IN (Da, Du, K, Mn)",Canonical,?05:00,?04:00,northamerica,
+US,America/Indiana/Winamac,Eastern - IN (Pulaski),Canonical,?05:00,?04:00,northamerica,
+US,America/Indianapolis,,Link,?05:00,?04:00,backward,Link to America/Indiana/Indianapolis
+US,America/Juneau,Alaska - Juneau area,Canonical,?09:00,?08:00,northamerica,
+US,America/Kentucky/Louisville,Eastern - KY (Louisville area),Canonical,?05:00,?04:00,northamerica,
+US,America/Kentucky/Monticello,Eastern - KY (Wayne),Canonical,?05:00,?04:00,northamerica,
+US,America/Knox_IN,,Link,?06:00,?05:00,backward,Link to America/Indiana/Knox
+US,America/Los_Angeles,Pacific,Canonical,?08:00,?07:00,northamerica,
+US,America/Louisville,,Link,?05:00,?04:00,backward,Link to America/Kentucky/Louisville
+US,America/Menominee,Central - MI (Wisconsin border),Canonical,?06:00,?05:00,northamerica,
+US,America/Metlakatla,Alaska - Annette Island,Canonical,?09:00,?08:00,northamerica,
+US,America/New_York,Eastern (most areas),Canonical,?05:00,?04:00,northamerica,
+US,America/Nome,Alaska (west),Canonical,?09:00,?08:00,northamerica,
+US,America/North_Dakota/Beulah,Central - ND (Mercer),Canonical,?06:00,?05:00,northamerica,
+US,America/North_Dakota/Center,Central - ND (Oliver),Canonical,?06:00,?05:00,northamerica,
+US,America/North_Dakota/New_Salem,Central - ND (Morton rural),Canonical,?06:00,?05:00,northamerica,
+US,America/Shiprock,,Link,?07:00,?06:00,backward,Link to America/Denver
+US,America/Sitka,Alaska - Sitka area,Canonical,?09:00,?08:00,northamerica,
+US,America/Yakutat,Alaska - Yakutat,Canonical,?09:00,?08:00,northamerica,
+US,Navajo,,Link,?07:00,?06:00,backward,Link to America/Denver
+US,US/Alaska,,Link,?09:00,?08:00,backward,Link to America/Anchorage
+US,US/Aleutian,,Link,?10:00,?09:00,backward,Link to America/Adak
+US,US/Arizona,,Link,?07:00,?07:00,backward,Link to America/Phoenix
+US,US/Central,,Link,?06:00,?05:00,backward,Link to America/Chicago
+US,US/East-Indiana,,Link,?05:00,?04:00,backward,Link to America/Indiana/Indianapolis
+US,US/Eastern,,Link,?05:00,?04:00,backward,Link to America/New_York
+US,US/Hawaii,,Link,?10:00,?10:00,backward,Link to Pacific/Honolulu
+US,US/Indiana-Starke,,Link,?06:00,?05:00,backward,Link to America/Indiana/Knox
+US,US/Michigan,,Link,?05:00,?04:00,backward,Link to America/Detroit
+US,US/Mountain,,Link,?07:00,?06:00,backward,Link to America/Denver
+US,US/Pacific,,Link,?08:00,?07:00,backward,Link to America/Los_Angeles
