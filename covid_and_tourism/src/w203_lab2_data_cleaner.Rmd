@@ -1,0 +1,430 @@
+---
+title: "Lab 2 Data Cleaner"
+author: "Kasha Muzila, Stephanie He and Hannah Gross"
+date: "7/24/2021"
+output: html_document
+css: test_css.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, message = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(lmtest)
+library(zoo)
+library(sandwich)
+library(stargazer)
+library(stringr)
+library(readxl)
+library(formattable)
+source('format_date.R')
+```
+
+### To answer our research question, we will merge the following three datasets:
+
+* [Airbnb Listings Data](http://insideairbnb.com/get-the-data.html)
+
+* [COVID-19 Vaccinations in the United States, Jurisdiction](https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-Jurisdi/unsk-b7fc)
+
+* [COVID-19 US State Policy Database](https://www.openicpsr.org/openicpsr/project/119446/version/V114/view?path=/openicpsr/119446/fcr:versions/V114/COVID-19-US-State-Policy-Database-master&type=folder)
+
+### The data clean up process divided into three parts by dataset.
+
+## Part 1. [Airbnb Listings Data](http://insideairbnb.com/get-the-data.html)
+
+### ~ Load and Consolidate Raw Airbnb Listings Data ~
+```{r load and consolidate raw Airbnb listings data, message=FALSE, warning=FALSE}
+listings = data.frame() # Create empty dataframe.
+
+# Generate a vector of all Airbnb data file names.
+files <- list.files(
+  path="data/raw/airbnb_data", 
+  full.names=TRUE, 
+  recursive=FALSE)
+
+# Loop through Airbnb data files.
+for (file_name in files){
+    raw_listings <- read_csv(file = file_name) # Load file.
+    
+    # Isolate Airbnb variables of interest.
+    keeps <- c("id","last_scraped",
+               "availability_60", "availability_365", 
+               "price", "accommodates", 
+               "review_scores_value", "number_of_reviews",
+               "host_is_superhost", "room_type", 
+               "minimum_nights")
+    fltr_listings <- raw_listings[keeps]
+
+    # Convert price variable to numeric.
+    fltr_listings$price = str_replace(as.character(fltr_listings$price),",","")
+    fltr_listings$price <- as.numeric(str_extract(fltr_listings$price,"(\\d+)"))
+
+    # Add `state` variable.
+    state <- toupper(as.character(strsplit(file_name, '_')[[1]][3])) # Extract state abrv from file_name.
+    fltr_listings$state <- state # Add cleaned state value to new `state` variable.
+    listings <- rbind(listings, fltr_listings) # Concatenate listings dataframes.
+    }
+```
+
+### ~ Initial Airbnb Listings Data EDA ~
+```{r initial data exploration}
+summary(listings)
+```
+
+### ~ Initial Findings ~
+``` {r, echo=FALSE}
+review_scores_value_na <- format(sum(is.na(listings$review_scores_value)), big.mark=",", scientific=FALSE)
+host_is_superhost_na <- format(sum(is.na(listings$host_is_superhost)), big.mark=",", scientific=FALSE)
+
+min_last_scraped <- format(min(listings$last_scraped), '%b %d, %Y')
+max_last_scraped <- format(max(listings$last_scraped), '%b %d, %Y')
+
+min_availability_365 <- min(listings$availability_365)
+
+min_minimum_nights <- format(min(listings$minimum_nights), big.mark=",", scientific=FALSE)
+max_minimum_nights <- format(max(listings$minimum_nights), big.mark=",", scientific=FALSE)
+
+```
+
+1. The initial length of the compiled Airbnb listings dataset is `r format(nrow(listings), big.mark=",", scientific=FALSE)`.
+
+2. There are quite a few 'NA' values in `review_scores_value` (`r review_scores_value_na`) and `host_is_superhost` (`r host_is_superhost_na`). 'NA' values will need to be explored further.
+
+3. It appears that the minimum value for `availability_365` is 0. This tells me that some Airbnbs do not have any availability for the next 365 days. The availability variables will need to be explored further.
+
+4. It also appears that the range of values for `minimum_nights` is from `r min_minimum_nights` to `r max_minimum_nights`. Further exploration of this variable is needed because it seems very unrealistic for a host who wants business to require travelers to rent their space for more than a year.
+
+### ~ Isolate the 'NA' Values in the Listings Dataset ~
+```{r isolate NA values, message=FALSE}
+# Make a dataframe of only data entries with a 'NA' value.
+listings_na_values <- listings %>% 
+  filter(is.na(id) | is.na(last_scraped) 
+         | is.na(availability_60) | is.na(availability_365) 
+         | is.na(review_scores_value) | is.na(number_of_reviews)
+         | is.na(price) | is.na(accommodates) 
+         | is.na(room_type) | is.na(host_is_superhost) 
+         | is.na(minimum_nights))
+```
+
+### ~ A Deeper Look at Observations with 'NA' Values in the Listings Dataset ~
+```{r explore NA values, message=FALSE}
+summary(listings_na_values)
+``` 
+
+### ~ 'NA' Value Analysis Findings ~
+``` {r, echo=FALSE}
+n_listings_na_values <- format(nrow(listings_na_values), big.mark=",", scientific=FALSE)
+```
+
+1. It appears there are `r n_listings_na_values` rows in the listings dataframe that contain at least one 'NA' value. To preserve the accuracy of our calculations, we will drop these rows of missing data.
+
+### ~ Remove 'NA' Values ~
+```{r remove NA values, message = FALSE}
+# Remove 'NA' values from listings dataframe.
+listings <- listings %>% 
+  filter(!is.na(id) & !is.na(last_scraped) 
+         & !is.na(availability_60) & !is.na(availability_365) 
+         & !is.na(review_scores_value) & !is.na(number_of_reviews)
+         & !is.na(price) & !is.na(accommodates)
+         & !is.na(room_type) & !is.na(host_is_superhost)
+         & !is.na(minimum_nights))
+```
+
+### ~ Secondary EDA of Listings Dataset Scrubbed for 'NA' Values~
+```{r secondary EDA of data scrubbed for NA values, message=FALSE}
+summary(listings)
+``` 
+
+### ~ Secondary EDA Findings ~
+``` {r, echo=FALSE}
+n_listings_not_na_values <- format(nrow(listings), big.mark=",", scientific=FALSE)
+
+min_price <- format(currency(min(listings$price), symbol="$", big.mark=","))
+max_price <- format(currency(max(listings$price), symbol="$", big.mark=","))
+price_rng <- sprintf("%s - %s",min_price, max_price)
+
+min_number_of_reviews <- format(min(listings$number_of_reviews), big.mark=",")
+max_number_of_reviews <- format(max(listings$number_of_reviews), big.mark=",")
+number_of_reviews_rng <- sprintf("%s - %s",min_number_of_reviews, max_number_of_reviews)
+```
+
+1. The number of observations in the compiled Airbnb listings dataset scrubbed for 'NA' values is `r n_listings_not_na_values`.
+
+2. The range of values for `price` and `number_of_reviews` is very large. It is possible these variables will require a log transform for this analysis:
+    * `price`: `r price_rng`
+    * `number_of_reviews`: `r number_of_reviews_rng`
+    
+### ~ Explore Airbnb Availability Over the Next 60 and 365 Days ~
+```{r explore airbnb availability}
+# Get count of 0 values in both availability variables.
+n_0_availability_60 <- format(sum(listings$availability_60==0), big.mark=",")
+n_0_availability_365 <- format(sum(listings$availability_365==0), big.mark=",")
+
+# Generate histogram of distribution of Airbnb availability over the next 60 days.
+availability_60_histogram <- listings %>% 
+  ggplot(aes(x=availability_60)) + geom_histogram(binwidth = 3, fill="purple")  +
+  labs(
+    title    = sprintf('%s Airbnb listings have 0 availability for the next 60 days', n_0_availability_60),
+    x        = 'Airbnb Availability over the next 60 days', 
+    y        = 'Count of Observations')
+
+# Generate histogram of distribution of Airbnb availability over the next 365 days.
+availability_365_histogram <- listings %>% 
+  ggplot(aes(x=availability_365)) + geom_histogram(binwidth = 8, fill="purple") +
+  labs(
+    title    = sprintf('%s Airbnb listings have 0 availability for the next 365 days', n_0_availability_365), 
+    x        = 'Airbnb Availability over the next 365 days', 
+    y        = 'Count of Observations')
+```
+
+``` {r, echo=FALSE}
+# Print histograms.
+availability_60_histogram
+availability_365_histogram
+
+listings_0_365 <- listings %>% filter(availability_60==60)
+
+listings_0_365 %>% 
+  count(state)
+
+listings %>% 
+  count(state)
+
+```
+
+It appears that `r n_0_availability_365` of the Airbnb listings in this dataset have 0 availability over the next 365 days. The availability variables in this data represent the number of days that have either been booked by a guest or been blocked by the host. We believe it is unlikely that `r n_0_availability_365` listings have been booked for the next 365 days by a guest and it is far more likely these listings have had the availability blocked by the host. Additionally, because there is no availability for these listings over the next 365 days, these listings do not have any bearing over our research question, which is to determine if vaccination rates impact Airbnb availability as it relates to tourism. Therefore we will remove these listings from our dataset. 
+
+### ~ Remove Listings with 0 Availability for the Next 360 Days ~
+```{r remove 0 avabilability listings data, message = FALSE}
+# Remove all listings that have 0 availability for an entire year.
+listings <- listings %>% 
+  filter(availability_365 > 0)
+```
+
+### ~ Explore `minimum_nights` Variable ~
+```{r explore minimum_nights}
+n_over3months_minimum_nights <- format(sum(listings$minimum_nights>90), big.mark=",")
+n_lessthanequal_3months_minimum_nights <- format(sum(listings$minimum_nights<=90), big.mark=",")
+
+# Generate histogram of distribution of Airbnb listing minimum nights.
+minimum_nights_histogram <- listings %>% 
+  ggplot(aes(x=minimum_nights)) + geom_histogram(binwidth = 50, fill="purple")  +
+  labs(
+    title    = sprintf('%s Airbnb listings have required minimum nights > 3 months (90 days)', n_over3months_minimum_nights),
+    x        = 'Airbnb Listing Minimum Nights', 
+    y        = 'Count of Observations')
+
+# Filter data for only listings with minimum nights less than or equal to 90 days (3 months)
+reasonable_minimum_nights_listings <- listings %>% 
+  filter(minimum_nights <= 90)
+
+# Generate histogram of distribution of Airbnb listing minimum nights less than or equal to 90 days (3 months)
+reasonable_minimum_nights_histogram <- reasonable_minimum_nights_listings %>% 
+  ggplot(aes(x=minimum_nights)) + geom_histogram(binwidth = 3, fill="purple")  +
+  labs(
+    title    = sprintf('%s Airbnb listings have required minimum nights <= 3 months (90 days)', n_lessthanequal_3months_minimum_nights),
+    x        = 'Airbnb Listing Minimum Nights', 
+    y        = 'Count of Observations')
+```
+
+``` {r, echo=FALSE}
+# Print histograms.
+minimum_nights_histogram
+reasonable_minimum_nights_histogram
+```
+
+It appears that `r n_over3months_minimum_nights` of the Airbnb listings in this dataset require over 90 nights for each booking. We believe it is likely that these listings are using the required minimum nights to deter travelers from booking their listing. Because we are trying to determine if vaccination rates impact Airbnb availability as it relates to tourism, we do not consider these listings to be valid for our analysis. Therefore we will remove these listings from our dataset. 
+
+### ~ Remove Listings with `minimum_nights` greater than 90 days (3 months) ~
+```{r remove > 90 day minimum_nights listings data, message = FALSE}
+# Remove all listings that have `minimum_nights` greater than 90 days (3 months) .
+listings <- listings %>% 
+  filter(minimum_nights <= 90)
+```
+
+### ~ Add New `lprice` Variable ~
+```{r Add lprice variables, message = FALSE}
+# Create log base 10 transform of `price` variable
+listings$lprice <- log(listings$price,10)
+```
+
+### ~ Drop All Superfluous Listings Variables ~
+```{r drop superfluous variables, message = FALSE}
+keeps <- c("id","last_scraped",
+           "availability_60", "state",
+           "review_scores_value", "number_of_reviews",
+           "host_is_superhost", "room_type", 
+           "price", "lprice", "accommodates")
+listings <- listings[keeps]
+```
+
+### ~ Third EDA of Listings Dataset ~
+```{r third EDA of listings data, message=FALSE}
+summary(listings)
+``` 
+
+### ~ Third EDA of Listings Dataset Findings ~
+1. The final length of the compiled Airbnb listings dataset is `r format(nrow(listings), big.mark=",", scientific=FALSE)`.
+
+
+## Part 2. [COVID-19 Vaccinations in the United States, Jurisdiction](https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-Jurisdi/unsk-b7fc)
+
+### ~ Load CDC Vaccine Data ~
+```{r Load CDC Vaccine Data, warning=FALSE, message=FALSE}
+# Load CDC Vaccine Data.
+raw_vaccine <- read_csv("./data/raw/cdc_vaccine_data/COVID-19_Vaccinations_in_the_United_States_Jurisdiction.csv")
+
+# Isolate variables of interest.
+vaccine <- data.frame(raw_vaccine$Date, raw_vaccine$Location, raw_vaccine$Administered_Dose1_Recip_18PlusPop_Pct)
+names(vaccine) <- c("date", "state", "administered_dose1_recip_18plus_pct")
+
+# Convert dates to date type object.
+vaccine$date <- as.Date(vaccine$date, format="%m/%d/%Y")
+```
+
+### ~ Initial EDA of CDC Vaccine Dataset ~
+```{r initial EDA of CDC Vaccine dataset}
+summary(vaccine)
+```
+
+```{r echo=FALSE}
+n_vaccine <- format(nrow(vaccine), big.mark=",", scientific=FALSE)
+
+min_vaccine_date <- format(min(vaccine$date), '%b %d, %Y')
+max_vaccine_date <- format(max(vaccine$date), '%b %d, %Y')
+vaccine_date_rng <- sprintf('(%s - %s)', min_vaccine_date, max_vaccine_date)
+```
+
+1. The length of the cdc vaccine dataset is `r n_vaccine`.
+2. Dates in this set range from `r vaccine_date_rng`.
+3. Interestingly the 99.90% comes from the Republic of Palau (RP) a U.S. Pacific Island (June 22, 2021).
+
+### ~ Join the Listings Data with the CDC Vaccine Dataset ~
+```{r join vaccine and Airbnb datasets}
+# Create new temporary variable in listings for the join: state + '__' + last_scraped - 14 days.
+listings$join_var <- str_c(listings$state, '__', as.character(listings$last_scraped - 14))
+
+# Create new temporary variable in vaccine for the join: state + '__' + date.
+vaccine$join_var <- str_c(vaccine$state, '__', as.character(vaccine$date))
+
+# Drop `state` and `date` variables from vaccine dataset.
+keeps <- c("join_var", "administered_dose1_recip_18plus_pct")
+vaccine <- vaccine[keeps]
+
+# Join both dataframes on join_var.
+listings <- left_join(listings, vaccine, by = "join_var")
+
+# Drop 'join_var' from the listings dataframe.
+keeps <- c("id","last_scraped",
+           "availability_60", "state",
+           "review_scores_value", "number_of_reviews",
+           "host_is_superhost", "room_type", 
+           "price", "lprice", "accommodates",
+           "administered_dose1_recip_18plus_pct")
+listings <- listings[keeps]
+```
+
+### ~ Confirm Correct Merging of the CDC Vaccine Dataset ~
+```{r confirm correct merging of the CDC Vaccine dataset}
+summary(listings)
+```
+
+
+## Part 3. [COVID-19 US State Policy Database](https://www.openicpsr.org/openicpsr/project/119446/version/V114/view?path=/openicpsr/119446/fcr:versions/V114/COVID-19-US-State-Policy-Database-master&type=folder)
+
+### ~ Load COVID-19 US State Policy Data ~
+```{r Load COVID-19 US State Policy Data, warning=FALSE, message=FALSE}
+# Load COVID-19 US State Policy Data.
+raw_state_policy <- read_excel("./data/raw/covid_state_policy_data/COVID-19 US state policy database 7_14_2021.xlsx", sheet = 1)
+raw_state_policy <- raw_state_policy %>% slice(5:nrow(raw_state_policy))
+
+# Isolate variables of interest.
+keeps = c("STATE", "FM_END",	"CLREST", "ENDREST",	"CLOSEBAR",	"END_BRS",	"CLBAR2",	"CLRST2",	"ENDREST2",	"END_BRS2", "QR_ALLST",	"QRSOMEST", "QR_END")
+raw_state_policy <- raw_state_policy[keeps]
+
+# Convert dates to date type object.
+for(i in 2:ncol(raw_state_policy)) {
+  raw_state_policy[ ,i] <- lapply(raw_state_policy[ ,i], format_date)}
+
+# Convert full state names to state abbreviations. 
+state_abrv <- read_csv("./data/raw/state_abrv.csv") # Read in State Abbreviation csv.
+
+state_abrv <- data.frame(state_abrv$State, state_abrv$Code) # Isolate variables of interest.
+names(state_abrv) <- c("STATE", "CODE") # Rename columns for join.
+
+# Join state policy & state abrv.
+state_policy <- inner_join(state_abrv, raw_state_policy, by='STATE')
+```
+
+### ~ Initial EDA of State Policy Dataset ~
+```{r initial EDA of State Policy dataset}
+summary(state_policy)
+```
+
+### ~ Join the Listings Data with the State Policy Dataset ~
+```{r Join state policy and airbnb datasets}
+# Isolate variables of interest in the State Policy data.
+keeps<- c("CODE","FM_END",	"CLREST", "ENDREST", "CLRST2",	"ENDREST2")
+state_policy <- state_policy[keeps]
+
+# Rename `state` variable for join.
+names(state_policy) <- c("state","FM_END",	"CLREST", "ENDREST",	"CLRST2",	"ENDREST2") 
+
+# join listings & state_policy
+listings <- left_join(listings, state_policy, by='state')
+```
+
+### ~ Confirm Correct Merging of the State Policy Dataset ~
+```{r confirm correct merging of the State Policy dataset}
+summary(listings)
+```
+
+### ~ Aggregate # of Days Since the End of the Last Mask Mandate ~
+```{r Aggregate # of Days Since the End of the Last Mask Mandate}
+listings <-
+  listings %>%
+  mutate(
+  temp_date = case_when(
+    FM_END == '1899-12-30' ~ last_scraped,
+    FM_END > '1899-12-30' ~ FM_END))
+
+listings$date_diff_fm_end <-as.numeric(difftime(listings$last_scraped,listings$temp_date,units=c("days")))
+listings$date_diff_fm_end <- ifelse(listings$date_diff_fm_end<1,0, listings$date_diff_fm_end)
+```
+
+### ~ Aggregate # of Days Since the End of the Last Restaurant Closure ~
+```{r Aggregate # of days since the end of the last restaurant closure}
+listings <-
+  listings %>%
+  mutate(
+  temp_date = case_when(
+    ENDREST2 == '1899-12-30' ~ ENDREST,
+    ENDREST2 > '1899-12-30' ~ ENDREST2))
+
+listings$date_diff_end_rest <-as.numeric(difftime(listings$last_scraped,listings$temp_date,units=c("days")))
+listings$date_diff_end_rest <- ifelse(listings$date_diff_end_rest<1,0, listings$date_diff_end_rest)
+```
+
+### Finalize Final Variables for Analysis in Listings Dataframe
+```{r finalize final variables for analysis in listings dataframe}
+# Isolate variables of interest.
+keeps <- c("id","last_scraped",
+           "availability_60", "state",
+           "review_scores_value", "number_of_reviews",
+           "host_is_superhost", "room_type", 
+           "price", "lprice", "accommodates",
+           "administered_dose1_recip_18plus_pct",
+           "date_diff_fm_end", "date_diff_end_rest")
+
+listings <- listings[keeps]
+```
+
+### Save Listings Dataframe
+```{r Save data}
+# Save data in csv.
+write.csv(listings,"./data/processed/final_listings.csv", row.names = FALSE)
+```

@@ -1,0 +1,142 @@
+---
+title: 'The Relationship Between Tourism and COVID-19 Vaccinated Populations'
+author: "Kasha Muzila, Stephanie He and Hannah Gross"
+date: "8/04/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages and set options, include=FALSE}
+library(tidyverse) 
+library(magrittr)
+library(knitr)
+library(patchwork)
+library(dplyr)
+library(ggplot2) 
+library(foreign)
+# library(skimr)
+library(haven)
+library("gridExtra")                       
+# library("ggpubr")
+library(plyr)
+library(kableExtra)
+# library(ftExtra)
+# library(flextable)
+# library(rstatix)
+# library(coin)
+
+theme_set(theme_bw())
+
+options(tinytex.verbose = TRUE)
+```
+
+```{r load_data, echo = FALSE, message = FALSE, include=FALSE}
+## Load data in this chunk!
+```
+
+# Introduction
+
+Since it began in 2008, Airbnb has skyrocketed in popularity as an alternative to hotels by giving travelers a more authentic experience within that location. By 2011, they expanded internationally to 220 countries and regions and grew to over 7 million listings by 2021^[https://www.stratosjets.com/blog/airbnb-statistics/]. However, when the COVID-19 virus spread worldwide, many lives were taken, which caused nations to close their borders; the United States is one of these countries. This severely limited international and national travel which severely affected companies within the tourism industry^[https://www.sciencedirect.com/science/article/abs/pii/S0160738320302619]. As a result, Airbnb suffered a 72% decline in revenue and over 1,800 job cuts^[https://fortune.com/2020/11/16/airbnb-ipo-initial-public-offering-coronavirus-impact/#:~:text=Airbnb%20revealed%20plans%20for%20an,1%2C800%20job%20cuts%20in%20May].
+
+In January 2021, vaccines for COVID-19 were distributed across the United States, and by April, the Centers for Disease Control and Prevention (CDC) expands their travel guidelines^[https://www.ajmc.com/view/a-timeline-of-covid-19-vaccine-developments-in-2021]. This created a varying domino effect in businesses reopening and national travel being more accepted as the fear of spreading the virus started to subside. Specifically, road travel, air travel, and hotel occupancy all have recovered most or half of its losses^[https://www.ustravel.org/toolkit/covid-19-travel-industry-research]. However, not all state residents had the same political views about receiving the vaccination, leading to more vaccinated populations than others^[https://www.kff.org/policy-watch/the-red-blue-divide-in-covid-19-vaccination-rates-is-growing/].
+
+This paper aims to identify the effects of tourism in relation to COVID-19 vaccinated percent population on a state level. Given that tourism increased when tourists felt safer to travel, we are particularly interested in how this has affected Airbnb availability. This can give us a better indication that people are more willing to stay in locations that will make them feel safer with a higher vaccinated population. Specifically, our research question is the following:
+
+_**`Does a higher vaccinated state population percentage decrease Airbnb availability within popular tourist destinations within that state?`**_
+
+While our theoretical model represents existing causal pathways, it is unclear whether these relationships are statistically significant due to the vast amount of data we have. To further elaborate, even if a specific variable is not statistically significant, we would not know because the amount of data we are using will inherently cause that variable to be statistically significant. We combatted this by analyzing the model’s coefficients to better understand what the relationship could mean. As a result, our study cannot provide substantive evidence to support a causal relationship. Further refining of the dataset should be attempted in the future to provide more meaningful statistically significant variables.
+
+The rest of this paper is structured as follows. The Data Description section states each dataset we used and a brief background about the dataset. The Exploratory Data Analysis section describes the background of each variable of interest, any transformations, and relationships within those variables to see if we can proceed with our research question. The Model Selection and the Subset Selection Algorithm section describes how we determined our models and their differences. The Generate Models section states what our output was from these models. The CLM Assumptions and Limitations of the Model section explains how each CLM assumption applies to our study and goes over any limitations. The Omitted Variables Discussion goes over variables that might be nice to have but were omitted from our study. Finally, we wrap up with our main conclusions and discuss the implications of our results.
+
+# Data Description
+
+To operationalize our research question, we utilized two primary data sources, Inside Airbnb and the CDC’s COVID-19 Vaccinations in the United States, Jurisdiction.
+
+Inside Airbnb is an independent, non-commercial set of tools and data that allows users to explore how Airbnb is really being used in cities around the world^[http://insideairbnb.com/about.html]. The data behind the site was designed by Murry Cox, who sourced publicly available information from the Airbnb site and has been analyzed, cleansed, and aggregated^[http://insideairbnb.com/behind.html]. The site functions as a data scraper that takes Airbnb listing information at a specific snapshot in time with the primary goal of facilitating public discussion on if hosts are renting out residential properties permanently as hotels, as opposed to sharing the primary residence in which they live “occasionally”^[http://insideairbnb.com/about.html]. As a result, much of the sourced data has Airbnb availability for long-term stays or has missing information.
+
+We used Inside Airbnb’s listings for all available states within the United States and did our analysis on a state level for our research purpose. The information that we decided to focus on was availability that an Airbnb was listed for the next 60 days, the minimum amount of nights that a tourist can stay, the type of room that tourists book, reviews on the available listing, price of the availability, and if the host is a “superhost.” We defined a tourist as someone that would stay within an Airbnb listing for any length of time since Airbnb states within their news that travel will continue to be less about tourism and more about living, working, and connecting safely away from home^[https://news.airbnb.com/2021-travel-trends/].
+
+Our second primary data source, COVID-19 Vaccinations in the United States, Jurisdiction, is an overall US COVID-19 vaccine deliveries and administration data at national and jurisdiction level provided by the CDC^[https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-Jurisdi/unsk-b7fc]. The data represents all vaccine partners, including jurisdictional partner clinics, retail pharmacies, long-term care facilities, dialysis centers, Federal Emergency Management Agency and Health Resources and Services Administration partner sites, and federal entity facilities^[https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-Jurisdi/unsk-b7fc]. Some information found in this dataset is vaccination rates, age demographics, type of vaccine, and amount of dosages on a state level.
+
+We used the CDC’s data for all available states within the United States. Then, we decided to focus on the percent of people vaccinated with at least one dose of the COVID-19 vaccination within that state for age demographics 18 years and over. Since most of the Inside Airbnb data was scraped from April, we used the COVID-19 vaccinated population percentage starting on March 31st and focus our study within April. We took both primary datasets and matched them by state to give us our cleaned dataset of around 80,000 data points.
+
+
+# Exploratory Data Analysis
+
+**Availability in 60 days**: Since our outcome variable is to see if there is less availability within 60 days, we used *Inside Airbnb's* (`availability_60`) variable. This variable tells us the availability of the Airbnb listing 60 days in the future as determined by the calendar^[https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit#gid=982310896]. Note that a listing may not be available because it has been booked by a guest or blocked by the host^[https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit#gid=982310896]. Based on this definition, we assumed that fewer available days within the 60-day period would make that Airbnb more desirable to book in that location.
+
+**Population percent of at least one dose administered**: The CDC's *COVID-19 Vaccinations in the United States, Jurisdiction* dataset provides population percent of people vaccinated. We used the population percent of people vaccinated with at least one COVID-19 vaccination dose by state of residence (`administered_dose1_recip_18plus_pct`)^[https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-County/8xkx-amqh] as our primary input variable in order to test our causal hypothesis. This variable applies to all age demographics that are 18 years and older.
+
+**Minimum nights**: This variable is the minimum number of nights a tourist can stay for that Airbnb listing (`minimum_nights`)^[https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit#gid=982310896]. Since the listing price could be heavily correlated to minimum nights, we decided to include this as one of our input variables from *Inside Airbnb's* dataset. We assume that tourists can stay at an Airbnb location for any length of time, so outliers within this variable were included in the model.
+
+**Number of reviews**: *Inside Airbnb* was able to scrape the number of reviews given for Airbnb listings (`number_of_reviews`). Since a review score cannot exist without reviews, we included the number of reviews within our model as an input variable.
+
+**Review scores**: *Inside Airbnb's* dataset gives us information on an Airbnb's listed rating (`review_score_value`). This tells us how Airbnb users rated their overall experience of the listing and are scored on a scale between one and ten. We believe that Airbnb's rating scores could influence tourists to book a specific listing because it was given positive feedback among Airbnb users and have included this in our model as an input variable.
+
+**Price per accommodation**:  *Inside Airbnb's* dataset provides us the minimum charge given to an Airbnb user for each person that would like to stay within a listing (`price_per_accomodation`). An example of this is if one person stays at a listing, they will be charged $75 versus two people staying at a listing for a total of $150 ($75 per person). We included this in our model as an input variable since this could be correlated to the desirability of an Airbnb listing.
+
+**Superhost**: Superhosts are experienced hosts who provide a shining example for other hosts and extraordinary experiences for their guests, and a badge is displayed on their listings^[https://www.airbnb.com/help/article/828/what-is-a-superhost]. *Inside Airbnb's* dataset displays this as a Boolean variable (`host_is_superhost`). We believe that this could be correlated with review scores and desirability to book a specific listing on Airbnb and was included in our model as an input variable.
+
+**Room type**: All listings in Airbnb are grouped into three different room types; entire place, private room, and shared room^[https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit#gid=982310896]. Entire place functions typically as a home, including a kitchen, bedroom, bathroom, and a dedicated entrance that is not shared with others. Private rooms function as a private room for sleeping but share other spaces such as a kitchen or living room area. Shared rooms function as a sleeping area that a tourist would share with others as well as community areas (i.e., kitchen, bathroom, living area). *Inside Airbnb's* dataset includes all of these room types. For our purposes, we kept all varieties of room type (`room_type`) within our model as an input variable since we do not know what a tourist might prefer in a room type.
+
+
+```{r}
+
+```
+
+# Model Selection and the Subset Selection Algorithm
+
+```{r}
+
+```
+
+# Generate Models
+
+```{r}
+
+```
+
+# CLM Assumptions and Limitations of the Model
+
+```{r}
+
+```
+
+# Omitted Variables Discussion
+
+```{r}
+
+```
+
+# Conclusion
+
+
+# Rubric Outline
+## Importance and Context
+  1. Include Research Question: Does the vaccination population percentage impact airbnb availability in US cities?
+  2. Explain the key concepts & generally how we will measure them
+  3. State our specific `measurement goal`
+  4. Why should audience (airbnb hosts) care
+  5. Add context
+  6. Discuss `cross-cutting issues`
+  7. Assess appropriateness of data (on the fence about discussing the data here)
+
+## Experimental Design
+  1. Discuss the data
+  2. Discuss each model set up (variables used and transformations - support these choices by exploratory data analysis) (could include causal graphs)
+  3. Make sure there are at least three models (1. restrictive, 2. restrictive + supportive covariates, 3. super inclusive model)
+
+## Regression Table (report results for our X variable of interest)
+  1. Comment on statistical significance of results
+  2. Comment on practical significance of results
+
+## Limitations/Opportunities
+  1. Evaluate assumptions
+  2. Evaluate 5 instances of Omitted Variable Bias
+  
+## Conclusion

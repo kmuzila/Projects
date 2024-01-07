@@ -1,0 +1,131 @@
+---
+title: "Lab2_preliminary_analysis"
+output: html_notebook
+---
+
+```{r load packages, message = FALSE}
+library("readxl")
+library(tidyverse)
+library(ggplot2) 
+library(dplyr)
+library(lmtest)
+library(zoo)
+library(sandwich)
+library(stargazer)
+library(stringr)
+```
+
+
+```{r read clean data file}
+data <- read_csv("./W203_Lab2/src/data/processed/final_listings.csv")
+
+glimpse(data)
+summary(data)
+```
+
+```{r EDA}
+
+#histogram for all the variables but I think there is better way to show these
+
+par("mfcol"=c(2, 2))
+hist(data$availability_60)
+hist(data$review_scores_value)
+hist(data$accommodates) 
+hist(data$price_per_accomodation)
+
+#consider to use log transformation for review_score_value
+
+```
+
+```{r run correlation matrix for selec variables}
+data_1 <- data[, c(3,4,9,11,12)]
+data_1.corr <- cor(data_1)
+
+round(data_1.corr, 2)
+
+#results shows number_of_reviews has 0.12 correlation with review_score_value, can consider to use only one variable in the final model
+```
+
+
+```{r build two models}
+#trying to change the room_type into numeric (0,1) but failed to do so
+
+#d$room_type_num <- as.numeric(as.factor(d$room_type))
+
+model_one <- lm(availability_60 ~ administered_dose1_recip_18plus_pct, data = data)
+model_two <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + log(review_scores_value) + price_per_accomodation + host_is_superhost, data = data)
+
+summary(model_one)
+summary(model_two)
+
+#model_two is pretty good. Ideally can add room_type into the model
+
+```
+
+Check on CLM assumptions for model_two
+
+```{r inear conditional expectation}
+data %>% 
+  mutate(
+    model_two_preds = predict(model_two), 
+    model_two_resids = resid(model_two)
+  ) %>% 
+  ggplot(aes(model_two_preds, model_two_resids)) + 
+  geom_point() + 
+  stat_smooth()
+
+#May consider to adjust the outliers
+
+```
+
+```{r check predication v.s. variables}
+data <- data %>% 
+  mutate(
+    model_two_preds = predict(model_two), 
+    model_two_resids = resid(model_two)
+  ) 
+
+dose_resids <- data %>% 
+  ggplot(aes(administered_dose1_recip_18plus_pct, model_two_resids)) + 
+  geom_point() + 
+  stat_smooth()
+
+scores_resids <- data %>% 
+  ggplot(aes(log(review_scores_value), model_two_resids)) + 
+  geom_point() + 
+  stat_smooth()
+
+price_per_acco_resids <- data %>% 
+  ggplot(aes(price_per_accomodation, model_two_resids)) + 
+  geom_point() + 
+  stat_smooth()
+
+```
+
+```{r}
+dose_resids
+scores_resids
+price_per_acco_resids
+
+#need to transform price_per_accodomation
+```
+
+```{r Homoskedastic errors}
+
+plot(model_two, which=3)
+
+```
+
+```{r normally distributed error}
+plot_one <- data %>% 
+  ggplot(aes(x = model_two_resids)) + 
+  geom_histogram()
+  
+plot_two <- data %>% 
+  ggplot(aes(sample = model_two_resids)) + 
+  stat_qq() + stat_qq_line()
+
+plot_one 
+plot_two
+```
+

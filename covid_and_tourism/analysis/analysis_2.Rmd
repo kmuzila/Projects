@@ -1,0 +1,222 @@
+---
+title: "Lab2_preliminary_analysis"
+output: html_notebook
+---
+
+```{r load packages, message = FALSE}
+library(tidyverse)
+library(ggplot2) 
+library(dplyr)
+library(lmtest)
+library(zoo)
+library(sandwich)
+library(stargazer)
+library(stringr)
+library(readxl)
+library(car)
+```
+
+# Does a higher vaccinated state population percentage decrease airbnb availability within popular tourist destinations within that state?
+```{r read clean data file}
+data <- read_csv("src/data/processed/final_listings.csv")
+
+glimpse(data)
+summary(data)
+spec(data)
+```
+
+```{r EDA Outcome Variable - availability_60}
+hist(data$availability_60)
+```
+
+```{r EDA Main Input Variable - administered_dose1_recip_18plus_pct}
+hist(data$administered_dose1_recip_18plus_pct)
+```
+
+```{r EDA Input Variable - minimum_nights}
+hist(data$minimum_nights) # regular
+hist(log(data$minimum_nights,10)) # log base 10
+hist(log(data$minimum_nights)) # natural log
+
+listings %>% 
+  count(minimum_nights)
+```
+
+```{r EDA Input Variable - review_scores_value}
+hist(data$review_scores_value) # regular
+hist(log(data$review_scores_value,10)) # log base 10
+hist(log(data$review_scores_value)) # natural log
+
+# review_scores_value is highly skewed over a small range of values, therefore the log transform does not improve the distribution of the data. It should be fine as is. 
+```
+
+```{r EDA Input Variable - price_per_accomodation}
+hist(data$price_per_accomodation)
+hist(data$lprice_per_accomodation) # We will be using the log transform
+```
+
+```{r EDA Outcome Variable - number_of_reviews}
+
+hist(data$number_of_reviews)
+hist(log(data$number_of_reviews))
+hist(log(data$number_of_reviews,10))
+
+# we will just use the regular number of reviews. 
+```
+
+```{r run correlation matrix for selec variables}
+
+keeps <- c("availability_60", "review_scores_value", "number_of_reviews", "minimum_nights", "price_per_accomodation", "administered_dose1_recip_18plus_pct", "date_diff_fm_end", "days_since_quarantine", "date_diff_end_rest", "date_diff_end_brs")
+
+data_1 <- data[keeps]
+data_1.corr <- cor(data_1)
+round(data_1.corr, 2)
+
+#results shows number_of_reviews has 0.12 correlation with review_score_value, can consider to use only one variable in the final model 
+```
+
+```{r summary_and_investigation_tables, echo = FALSE, message=FALSE, include = TRUE}
+vars <- c('V202310', 'V201145')
+
+df_q3_table <- anes[vars] %>%
+  table() %>%
+  data.frame()
+
+
+ggplot(df_q3_table, aes(V202310, V201145, fill= Freq)) + 
+  geom_tile(aes(fill = Freq)) +
+  geom_text(aes(label = round(Freq, 2))) +
+  scale_fill_gradient(low = "white", high = "green") +
+  theme_classic() +
+  scale_x_discrete(labels=c(
+   "-9. Refused",
+   "-7. No post-election data",
+  "-6. No post-election interview",
+  "-5. Interview breakoff ",
+  "1. Not at all important",
+  "2. A little important",
+  "3. Moderately important",
+  "4. Very important",
+  "5. Extremely important")) +
+  scale_y_discrete(labels=c(
+   "-9. Refused",
+  "-8. Don’t know",
+  "1. Approve",
+  "2. Disapprove")) +
+  labs(
+    y = 'Approval of Governor\'s handling of COVID', x = 'Importance of science for decisions about COVID', 
+    title = 'COVID: Importance of science against approval of the Governor\'s handling') +
+  coord_flip() +
+  theme(
+    axis.text.x = element_text(angle = 90), 
+    plot.title = element_text(hjust = 1), 
+    axis.title.y = element_text(hjust= 1, size = 10), 
+    axis.title.x = element_text(size = 10))
+
+
+```
+
+```{r restrictive models}
+
+# vaccination state data varies by last scraped date and the state of the listing
+model_one <- lm(availability_60 ~ administered_dose1_recip_18plus_pct, data = data)
+
+# I think the coefficient for administered_dose1_recip_18plus_pct is saying that when you increase the administered_dose1_recip_18plus_pct_2 by 1%, we will see a ~ -.3 change in airbnb availability over the next 60 days. 
+```
+
+
+```{r less restrictive model}
+model_two <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + review_scores_value + lprice_per_accomodation + host_is_superhost + room_type, data = data)
+
+summary(model_two)
+vif(model_two)
+```
+
+```{r full models}
+model_three <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + minimum_nights + review_scores_value +
+                host_is_superhost + room_type + number_of_reviews + lprice_per_accomodation, data = data)
+
+summary(model_three)
+vif(model_three)
+```
+
+```{r additonal models}
+# use vaccination state data from 3/31/21
+
+# Full Model with Policy Data included.
+fmodel_two <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + review_scores_value +
+                host_is_superhost + room_type + number_of_reviews + lprice_per_accomodation +
+                date_diff_fm_end + quarantine_boo + days_since_quarantine + 
+                date_diff_end_rest + date_diff_end_brs, data = data)
+
+# a Policy Data model
+Lmodel <- lm(availability_60 ~ administered_dose1_recip_18plus_pct +
+                date_diff_fm_end + quarantine_boo + days_since_quarantine + 
+                date_diff_end_rest + date_diff_end_brs, data = data)
+
+summary(fmodel_two)
+vif(fmodel_two)
+
+summary(Lmodel)
+vif(Lmodel)
+
+```
+
+```{r sweet stargazer, warning=FALSE}
+se.model_one = coeftest(model_one, vcov = vcovHC)[ , "Std. Error"]
+se.model_two = coeftest(model_two, vcov = vcovHC)[ , "Std. Error"]
+se.model_three = coeftest(model_three, vcov = vcovHC)[ , "Std. Error"]
+se.fmodel_two = coeftest(fmodel_two, vcov = vcovHC)[ , "Std. Error"]
+se.Lmodel = coeftest(Lmodel, vcov = vcovHC)[ , "Std. Error"]
+
+stargazer(model_one, model_two, model_three, fmodel_two, Lmodel, type = "text", omit.stat = "f",
+          se = list(se.model_one, se.model_two, se.model_three, se.fmodel_two, se.Lmodel),
+          star.cutoffs = c(0.05, 0.01, 0.001), title = "Table 1: The relationship between airbnb availability and the percent vaccinated state population")
+```
+
+Check on CLM assumptions for model_two
+
+> 1. **IID Sampling:** 
+
+> 2. **No Perfect Colinearity:** 
+Yes, there is no perfect colinearity in my model variables. I can tell because none of my variables were dropped in my regression model and I did not recieve any error messages. 
+
+> 3. **Linear Conditional Expectation:** 
+To assess linear conditional expectation I evaluate a plot of the residuals vs fitted values. To confirm linear conditional expectation I should see a straight line at zero. 
+
+```{r linear conditional expectation}
+plot(model_one, which=1)
+plot(model_two, which=1)
+plot(model_three, which=1)
+plot(fmodel_two, which=1)
+plot(Lmodel, which=1)
+```
+
+> 4. **Homoskedastic Errors:** 
+I looked for homoskedasticity using three methods. First, I use the residual vs fitted plot (above) to look for constant variance around the line. Second, I can look for a straight line in the scale-location plot (below). Finally, I can use the breusch-pagan test to test the following null hypothesis: the data is homoskedastic. Additionally, I can overcome any lack of homoskedasticity in my data by using robust standard errors. 
+
+
+```{r code and plots assessing error variance}
+plot(model_one, which=3)
+plot(model_two, which=3)
+plot(model_three, which=3)
+plot(fmodel_two, which=3)
+plot(Lmodel, which=3)
+
+bptest(model_one)
+bptest(model_two)
+bptest(model_three)
+bptest(fmodel_two)
+bptest(Lmodel)
+```
+
+> 5. **Normally Distributed Errors:** 
+To assess for normally distributed errors, I can simply plot the histogram of my model residuals and look for a normal distribution.
+
+```{r code and plots assessing normally distributed errors}
+hist(model_one$residuals)
+hist(model_two$residuals)
+hist(model_three$residuals)
+hist(fmodel_two$residuals)
+hist(Lmodel$residuals)
+```

@@ -1,0 +1,703 @@
+---
+title: "Have COVID-19 Vaccinations Impacted US Tourism?"
+subtitle: " "
+author: "Kasha Muzila, Stephanie He & Hannah Gross"
+date: "W203 Statistics for Data Science ~ Summer 2021"
+
+output:
+  bookdown::pdf_document2: 
+    toc: true
+    toc_appendix: true
+    fig_caption: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.cap="", echo=FALSE, message=FALSE, warning=FALSE, error = TRUE)
+```
+
+```{r load packages}
+# install.packages("extrafont")
+
+library(tidyverse)
+library(ggplot2) 
+library(dplyr)
+library(lmtest)
+library(zoo)
+library(sandwich)
+library(stargazer)
+library(stringr)
+library(readxl)
+library(car)
+library(reshape2)
+library(gridExtra)
+library(extrafont)
+library('scales')
+library(formattable)
+library(magrittr)
+library(png)
+library(knitr)
+
+source("../src/generate_state_availability_histogram.R")
+```
+
+```{r read clean data file, cache=TRUE}
+listings <- read_csv("../src/data/processed/final_listings.csv")
+```
+
+```{r generate key eda values, cache=TRUE}
+n_listings_obs <- format(nrow(listings), big.mark=",", scientific=FALSE)
+n_listings_0_availability <- format(sum(listings$availability_60==0), big.mark=",", scientific=FALSE)
+n_listings_0_availability_pct <- format(percent(round((sum(listings$availability_60==0)/nrow(listings)),2), digits=0))
+n_listings_completely_available <- format(sum(listings$availability_60==60), big.mark=",", scientific=FALSE)
+n_listings_completely_available_pct <- format(percent((sum(listings$availability_60==60)/nrow(listings)),digits=1))
+n_unique_vax_pct <- format(sum(!is.na(unique(listings$administered_dose1_recip_18plus_pct))))
+min_price <- format(currency(min(listings$price), symbol="$", big.mark=","))
+max_price <- format(currency(max(listings$price), symbol="$", big.mark=","))
+med_price <- format(currency(median(listings$price), symbol="$", big.mark=","))
+avg_price <- format(currency(mean(listings$price), symbol="$", big.mark=","))
+min_cap <- format(min(listings$accommodates))
+max_cap <- format(max(listings$accommodates))
+med_cap <- format(median(listings$accommodates))
+min_rating <- format(min(listings$review_scores_value))
+max_rating <- format(max(listings$review_scores_value))
+med_rating <- format(median(listings$review_scores_value))
+avg_rating <- format(round(mean(listings$review_scores_value),0))
+n_rating_10_pct <- format(percent(sum(listings$review_scores_value==10)/nrow(listings),digits=0))
+n_super_host <- format(sum(listings$host_is_superhost==TRUE), big.mark=",", scientific=FALSE)
+n_entire_home_pct <- format(percent(sum(listings$room_type=="Entire home/apt")/nrow(listings),digits=0))
+n_private_room_pct <- format(percent(sum(listings$room_type=="Private room")/nrow(listings),digits=0))
+n_hotel_plus_shared_room_pct <- format(percent(sum(listings$room_type=="Hotel room"|listings$room_type=="Shared room")/nrow(listings),digits=0))
+```
+
+*Please note that due to extended wait times for rendering output pdf, we have commented out the code for several tables and plots, and used images of the figures instead. Should you like to run the tables and plots directly from this Rmd file, please uncomment the code above each image.*
+
+\newpage
+
+# Introduction
+Since its founding in 2008, Airbnb has skyrocketed in popularity as an alternative to traditional hotel stays. The company provides travelers an authentic experience at their destination by connecting them with locals, who are willing to rent out their homes and apartments. By 2011, Airbnb had expanded their listings to 220 countries and regions, surpassing seven million listings by 2021^[Deane, ["2021 Airbnb Statistics: Usage, Demographics, and Revenue Growth"](https://www.stratosjets.com/blog/airbnb-statistics/)]. However, the world-wide COVID-19 pandemic caused nations to close their borders to stop the spread of the virus.  As a result of limited international and intra-national travel, Airbnb suffered a 72% decline in revenue and over 1,800 job cuts^[Fortune.com, ["Airbnb’s IPO filing reveals huge COVID impact"](https://fortune.com/2020/11/16/airbnb-ipo-initial-public-offering-coronavirus-impact/#:~:text=Airbnb%20revealed%20plans%20for%20an,1%2C800%20job%20cuts%20in%20May)]. Because Airbnb has become such a popular company in the tourism industry, we decided to use Airbnb availability data as a proxy to measure tourism levels within the United States. 
+
+Starting in January 2021, COVID-19 vaccinations have been distributed across the US. By April 2021, the United States’ Center for Disease Control and Prevention (CDC) began to relax travel restrictions^[AJMC, ["A Timeline of COVID-19 Vaccine Developments in 2021"](https://www.ajmc.com/view/a-timeline-of-covid-19-vaccine-developments-in-2021)]. As international and intra-national borders began reopening, Airbnb and the rest of the travel industry are beginning to recover.
+
+This paper seeks to identify a causal relationship between Airbnb availability and state-level vaccination percentages. We believe that as a state's fully and partially vaccinated populations grow, more people will be willing to travel again within the United States, and the availability of Airbnb listings will decrease. Our research question is as follows:
+\
+\
+**Does a higher vaccinated state population percentage decrease Airbnb availability within popular tourist destinations within that state?**
+\
+\
+We believe that investigation of causal relationships between COVID-19 and tourism will shed light on important information to help the tourism industry recover from the COVID-19 pandemic. We also believe that this research may be useful for helping to quell the pandemic by linking the aspects of the pandemic to the interests of the tourism industry. Finally, we believe that studying the relationships between COVID-19 vaccinations and state policy may be useful to lawmakers in states whose economies rely heavily on tourism.
+
+The rest of the paper is structured as follows. The Data Description section states each dataset we used and provides a brief background about each set.  The Exploratory Data Analysis section describes the background of the variables used in our models as well as any transformations made and the relationships between these variables. The Statistical Model section states our models and their differences. The Results section discusses the statistical significance of each model output as well as presents our overarching findings. The Assumptions section evaluates each model by both  large sample assumptions and additional CLM assumptions. The Omitted Variables section reports variables that were omitted from our study but may cause bias in our results. Finally, our Conclusion and Limitations sections summarize our major findings and potential opportunities for continued research.
+
+\newpage
+
+# Data Description
+To operationalize our research question, we utilized three data sources: Inside Airbnb^[Cox, ["Inside Airbnb"](http://insideairbnb.com/get-the-data.html)], the CDC’s COVID-19 Vaccinations in the United States, Jurisdiction^[CDC, ["COVID-19 Vaccinations in the United States,County"](https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-County/8xkx-amqh)] and the Boston University School of Public Health’s COVID-19 US State Policy Database^[Raifman, Julia, Nocka, Kristen, Jones, David, Bor, Jacob, Lipson, Sarah, Jay, Jonathan, … Galea, Sandro. COVID-19 US State Policy Database. Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributor], 2020-11-02. https://doi.org/10.3886/E119446V40 ["link"](https://www.openicpsr.org/openicpsr/project/119446/version/V40/view)]. We joined the three datasets by state, giving us our final dataset of `r n_listings_obs` observations.
+
+## Inside Airbnb
+Originally designed by Murry Cox, Inside Airbnb is an independent, non-commercial set of tools and data. Inside Airbnb provides users with Airbnb listing data that was scraped directly from the Airbnb website at specific points in time. The primary goal of Inside Airbnb is to facilitate public discussion on if hosts are renting out residential properties permanently as hotels, as opposed to sharing the primary residence in which they live “occasionally”^[ibid]. While the intent of the dataset is outside the scope of this analysis, we believe the broad methodology employed in data collection makes this a valid dataset to derive insights regarding tourism.
+
+Inside Airbnb only provides data for about 30 different locations within the United States. For the purpose of our analysis, we gathered all of the available US listings data. Pertinent listing information in this dataset includes: the availability over the next 60 days, the type of room, the cumulative rating, the price, and whether the host is a Super-Host. 
+
+To ensure the quality and appropriateness of the Inside Airbnb listings data, we made two adjustments to the dataset. First, we found that 27,486 of the Airbnb listings in the dataset have zero availability over the next 365 days. We believe it is highly unlikely that 27,486 Airbnb listings have been completely booked for the next 365 days by guests. Rather, it is far more likely the availability of these listings were blocked by the host. Therefore, we removed these listings from the dataset because we believe that the hosts of these listings do not intend to rent out their listings in the coming months. Second, we found that 865 Airbnb listings impose a minimum of nights greater than 90 nights. We believe that it is highly likely that the hosts of these listings are using the number of required minimum nights to deter travelers from booking their listing. Therefore, we removed these listings from our dataset, because we do not consider these listings to be valid for our analysis. 
+
+## COVID-19 Vaccinations in the United States, Jurisdiction
+Our secondary data source, COVID-19 Vaccinations in the United States, Jurisdiction, provides official information from the CDC regarding COVID-19 vaccinations within the United States and is updated daily. The data represents all vaccine partners, including jurisdictional partner clinics, retail pharmacies, long-term care facilities, dialysis centers, Federal Emergency Management Agency and Health Resources and Services Administration partner sites, and federal entity facilities^[ibid]. Pertinent vaccination information in this dataset consists of vaccination rates by state and age demographics.
+
+## COVID-19 US State Policy Database
+Our third data source is the COVID-19 US State Policy Database created and maintained by the Boston University School of Public Health. The database tracks the dates when each US state implemented and revoked new social safety net, economic, and physical distancing policies in response to the COVID-19 pandemic. In the interest of our analysis, we used physical distancing policies, including the date of restaurant reopening and the date face mask mandates were ended. 
+
+\newpage
+
+# Exploratory Data Analysis
+*See Appendix A for codebook.*
+
+## Outcome Variable: Airbnb Availability (T)
+`availability_60`
+
+To operationalize tourism, our outcome concept, we decided to use Airbnb listing availability over the next 60 days as our outcome variable. This variable reports the number of days a listings has neither been booked by a traveler or blocked by the host. 
+
+In addition to the 60 day availability variable, Inside Airbnb also provides availability information for the next 30, 90 and 365 days for each listing. We decided to use the 60 day variable for a number of reasons. First, our data was scraped between March and May 2021. This time period is about 60-90 days before people tend to take summer vacations (~June - August). We also decided to use 60 days instead of 90 days because we believe that the uncertainty with the pandemic will likely make people book Airbnb listings closer to their vacation date. 
+
+```{r, fig.cap="Airbnb Availability Over the Next 60 Days"}
+# Generate histogram of distribution of Airbnb availability over the next 60 days.
+availability_60_histogram <- listings %>%
+  ggplot(aes(x=availability_60)) + 
+  geom_histogram(binwidth = 3, color="black", fill="purple") +
+  labs(
+    title = "Distribution of Airbnb Availability of the Next 60 Days",
+    x = "Airbnb Availability", 
+    y = "Count of Observations") +
+  theme_bw() + 
+  theme(text=element_text(family="Times")) +
+  theme(title = element_text(size = 10.5)) + 
+  theme(axis.title = element_text(size = 10))
+
+availability_60_histogram
+```
+
+Our final dataset contains `r n_listings_0_availability` (~`r n_listings_0_availability_pct`) listings with zero availability and `r n_listings_completely_available` (~`r n_listings_completely_available_pct`) that are completely available for the next  60 days. The rest of the listings are evenly split across the two extremes (see Figure 1).
+
+\newpage
+
+```{r, fig.cap="Availability Histograms by State", fig.width=7, fig.height=7}
+# Generate histograms of distribution of Airbnb availability over the next 60 days by state.
+require(gridExtra)
+
+ca_listings <- listings %>% filter(state=='CA')
+ca_availability_60_histogram <- generate_state_availability_histogram(ca_listings, "California")
+
+fl_listings <- listings %>% filter(state=='FL')
+fl_availability_60_histogram <- generate_state_availability_histogram(fl_listings, "Florida")
+
+or_listings <- listings %>% filter(state=='OR')
+or_availability_60_histogram <- generate_state_availability_histogram(or_listings, "Oregon")
+
+la_listings <- listings %>% filter(state=='LA')
+la_availability_60_histogram <- generate_state_availability_histogram(la_listings, "Louisiana")
+
+ma_listings <- listings %>% filter(state=='MA')
+ma_availability_60_histogram <- generate_state_availability_histogram(ma_listings, "Massachusetts")
+
+nj_listings <- listings %>% filter(state=='NJ')
+nj_availability_60_histogram <- generate_state_availability_histogram(nj_listings, "New Jersey")
+
+# Print histograms
+grid.arrange(ca_availability_60_histogram, fl_availability_60_histogram,
+             or_availability_60_histogram, la_availability_60_histogram,
+             ma_availability_60_histogram, nj_availability_60_histogram,
+             ncol=2, nrow=3)
+```
+
+In addition, we found that the distribution of availability for each state was more or less proportional to that of the entire dataset (see Figure 2). Therefore, the distribution of Airbnb availability does not have any skewness toward any particular state. We believe that the large amount of listings with completely open availability in the next 60 days makes sense because we expect potential travelers to be more hesitant about traveling during the pandemic. Similarly, it makes sense that hosts may be blocking their calendars to stop people from booking their listing due to COVID-19. As such, we believe it is appropriate to use this data for our outcome variable without transformation.
+
+\newpage
+
+## Feature of Interest: Vaccinated Population Percentage (V)
+`administered_dose1_recip_18plus_pct`
+
+To operationalize vaccinated population percentage, we used the percentage of people vaccinated with at least one dose of a COVID-19 vaccine within that state for age demographics 18 years+, reported in the CDC's COVID-19 Vaccinations in the United States, Jurisdiction dataset.
+
+There are several reasons why we believe this variable is a good indicator for the vaccination rate for a particular state. First, we believe people who receive the first dose of vaccine are likely to receive the second dose in the near term. Additionally, many other studies regarding COVID-19 only look at adult populations because this group is at higher risk^[Leidman E, Duca LM, Omura JD, Proia K, Stephens JW, Sauber-Schatz EK. COVID-19 Trends Among Persons Aged 0–24 Years — United States, March 1–December 12, 2020. MMWR Morb Mortal Wkly Rep 2021;70:88–94. DOI: http://dx.doi.org/10.15585/mmwr.mm7003e1external icon. ["link"](https://www.cdc.gov/mmwr/volumes/70/wr/mm7003e1.htm)]. We believe focusing our attention on the adult population is consistent with COVID-19 research.
+
+We generated two methodologies for joining the COVID-19 Vaccination dataset with the Inside Airbnb listings data. First, we filtered the vaccine dataset by a single date and then joined by state. This method resulted in only 18 unique values, significantly limiting the information in our main feature of interest. 
+
+We replaced this initial method with an alternative that joins the datasets by state and the `last_scraped` date of each Airbnb listing. We modified the `last_scraped` date by subtracting 14 days from each observation. We chose 14 days because it takes approximately 14 days for a vaccine to become effective and also for people to take their second dose. We also expect that Airbnb bookings must have been booked some time before the listings’ `last scraped` date, so we must use a date further in the past to try to approximate the time when bookings may have occurred. We believe this second method allows us to better approximate the conditions under which Airbnb bookings were made. This second method also allowed us to add more variation within our main variable of interest. After this adjustment, there are `r n_unique_vax_pct` unique values within this variable.
+
+```{r, fig.cap="State-Level Vaccinated Population Percentages", fig.width=6, fig.height=4}
+# Generate histogram of distribution of % vaccinated
+administered_dose1_recip_18plus_pct_histogram <- listings %>% 
+  ggplot(aes(x=administered_dose1_recip_18plus_pct)) + 
+  geom_histogram(binwidth = 1, color="black", fill="purple")  +
+  labs(
+    title = "Distribution of Vaccinated Population Percentages",
+    x = "Vaccinated Population Percentage", 
+    y = "Count of Observations") +
+  theme_bw()  + 
+  theme(text=element_text(family="Times")) +
+  theme(title = element_text(size = 10.5))+ 
+  theme(axis.title = element_text(size = 10))
+administered_dose1_recip_18plus_pct_histogram
+```
+
+
+\newpage
+
+Figure 3 shows the distribution of our key variable of interest, vaccinated population percentage. The variable fails to produce a normal distribution and clusters around a few values (22%, 36%, 45%, etc) for a few reasons. Firstly, the variation calculated from the second methodology derives the vaccination percentage 14 days prior to a listings’ `last_scraped` date and the vaccinated population percentage grows gradually over time. This means that no significant vaccination rate changes occurred during the 14 days. Additionally, the Airbnb listings are also concentrated in certain states. In our dataset, the top three states - California, New York and Florida account for more than 50% of all listings (see Appendix B).
+
+## Additional Features
+Based on AirDNA’s research, a specialized short-term rental analytics website with a focus on Airbnb^[AirDNA, ["How to Optimize Your Airbnb Occupancy Rate with Data Analytics"](https://www.airdna.co/blog/how-to-optimize-your-airbnb-occupancy-rate-with-data-analytics)], key factors that impact Airbnb listing occupancy rates during normal times, which is close to our outcome variable, are pricing, Super-Host status, and ratings. Below we discuss additional features we have incorporated in our own models that may impact our outcome variable.
+
+### Listing Price per Night (log transform) (P)
+`lprice`
+
+Price shows the daily price of an Airbnb listing in USD. Values range from `r min_price` to `r max_price` with median at `r med_price`  and mean at `r avg_price`.
+
+```{r, fig.cap="Listing Price per Night Variable Comparison", fig.width=8, fig.height=4}
+require(gridExtra)
+
+# Generate histogram of distribution of price
+price_histogram <- listings %>% 
+  ggplot(aes(x=price)) + geom_histogram(binwidth = 100, color="black", fill="purple") +
+  labs(
+    title = "Price Per Night",
+    x = "Price", 
+    y = "Count of Observations") +
+  theme_bw() +
+  theme(text=element_text(family="Times")) +
+  theme(title = element_text(size = 10.5)) +
+  theme(axis.title = element_text(size = 10)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 10, hjust = 1))
+
+# Generate histogram of distribution of log base 10 of price
+lprice_histogram <- listings %>% 
+  ggplot(aes(x=lprice)) + 
+  geom_histogram(binwidth = .1, color="black", fill="purple") +
+  labs(
+    title = expression("Log"[10]*"Price Per Night"),
+    x = expression("Log"[10]*"Price"), 
+    y = "Count of Observations") +
+  theme_bw() + 
+  theme(text=element_text(family="Times")) +
+  theme(title = element_text(size = 10.5)) + 
+  theme(axis.title = element_text(size = 10))
+grid.arrange(price_histogram, lprice_histogram, ncol=2)
+```
+
+Based on the histogram of price (Figure 4), we view it is reasonable to use the log base 10 transformation as people focus on price increase in terms of percentage instead of dollar amount.
+
+### Maximum Capacity (A)
+`accommodates`
+
+The Inside Airbnb dataset provides the maximum capacity of each listing. The range of values for `accommodates` is between `r min_cap` to `r max_cap` with median at `r med_cap`.
+
+### Listing Rating (S)
+`review_score_value`
+
+The Inside Airbnb dataset gives us information on the cumulative rating of each Airbnb listing. This variable scores on a scale between one and ten. The values in this variable range from `r min_rating` to `r max_rating` with mean and median at `r avg_rating` and `r med_rating` respectively. Most of the review scores are between 8 and 10 with ~`r n_rating_10_pct` at a score of 10. Because both hosts and guests rate each other, we view the highly skewed distribution of this variable as reasonable^[Airbnb, ["Reviews for stays"](https://www.airbnb.com/help/article/13/reviews-for-stays)]. 
+
+
+### Super-Host (SH)
+`host_is_superhost`
+
+Super-Hosts are experienced hosts who provide an outstanding example for other hosts and extraordinary experiences for their guests. A Super-Host badge is displayed on the webpage of these host’s listings^[Airbnb, ["What is a Superhost?"](https://www.airbnb.com/help/article/828/what-is-a-superhost)]. The Inside Airbnb dataset provides a Boolean variable to indicate a Super-Host. We believe that Super-Host status is closely related to a listings’ desirability. There are `r n_super_host` Super-Host listings in our final dataset.
+
+### Property Type (PT)
+`room_type`
+
+All Airbnb listings are grouped into four different room types; entire place, hotel room, private room, and shared room. Entire place functions as a house or apartment, and typically includes a kitchen, bedroom, bathroom, and a dedicated entrance that is not shared with others. Hotel rooms are regular hotel rooms that meet Airbnb’s listing standards. Private rooms function as a private room for sleeping with access to shared spaces, such as a kitchen and/or living room area. Shared rooms function as a sleeping area that a traveler would share with other guests.
+
+The most popular room types in our dataset are the entire home/apartment (~`r n_entire_home_pct`) and private room (~`r n_private_room_pct`). The number of shared rooms and hotel rooms are  small, accounting for ~`r n_hotel_plus_shared_room_pct` of listings. 
+
+
+### Number of Days Since the End of Face Mask Mandates
+`date_diff_fm_end`
+
+To calculate this variable, we obtained the most recent date the face mask mandate ended for each state from COVID -19 US State Policy Database as of July 14th 2021. If the state did have a mask mandate that ended before a listing’s last scraped date, we got the difference between the end date of the mask mandate and the listing’s last scraped date. If the state had a mask mandate that has either not ended or ended after a listing’s last scraped date, the variable’s value should be zero. In the case where a state did not have a mask mandate, the variable’s value is also zero. We believe face mask mandates will significantly impact people’s willingness to travel, so we believe it is appropriate to include this variable in our model. 
+
+In terms of the data, most of the states have not lifted the face mask mandate. Over 90% of values in this variable are zero, and only one state, Texas, has lifted the face mask mandate.
+
+### Number of Days Since Restaurants Reopened
+`date_diff_end_rest`
+
+Similar to the variable above, we obtained the most recent date restaurants were reopened for each state from COVID -19 US State Policy Database as of July 14th, 2021. The variable is calculated based on the days between the restaurant last reopen date and the `last_scraped` date of the listing. We believe that the number of days restaurants have been reopened will have a large impact on tourism within that state. There is a larger range of values in this variable than in the face mask policy variable. However, the values are sporadic. Over 35% of data points are zero, ~15% between 40-100 days and rest around 300-360 days.   
+
+\newpage
+## Relationships Amongst Variables\
+```{r, fig.cap="Full Model Correlation", fig.width=6, fig.height=4}
+# Isolate, order & rename numeric variables
+keeps <- c( "administered_dose1_recip_18plus_pct", "lprice", "accommodates", "review_scores_value","date_diff_fm_end", "date_diff_end_rest")
+numeric_data <- listings[keeps]
+names(numeric_data) <- c("Vaccinated Pop", "Log(Price Per Night)", "Max Capacity", "Listing Rating", "End Face Mask Mandates", "Restaurants Reopening")
+
+# Create a correlation dataframe
+raw_corr_data <- cor(numeric_data)
+rounded_corr_data <- round(raw_corr_data, 2)
+
+# Get upper triangle of the correlation dataframe
+get_upper_tri <- function(corr_matrix){
+  corr_matrix[lower.tri(corr_matrix)]<- NA
+  return(corr_matrix)}
+
+upper_tri <- get_upper_tri(rounded_corr_data)
+
+melted_cor_matrix <- melt(upper_tri, na.rm = TRUE) # flatten correlation dataframe
+
+# Generate correlation heatmap
+full_model_corr_matrix <- ggplot(data = melted_cor_matrix, aes(Var2, Var1, fill = value)) + 
+  geom_tile(color = "white") +
+  labs(title = "Full Model Correlation Matrix", x='', y='') +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1,1), space = "Lab", 
+                       name="Pearson\nCorrelation") +
+  theme_bw() + 
+  theme(text=element_text(family="Times")) +
+  theme(title = element_text(size = 11)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 9.5, hjust = 1)) +
+  theme(axis.text.y = element_text(size = 9.5)) +
+  theme(legend.key.size = unit(1, 'cm')) +
+  coord_fixed()
+full_model_corr_matrix # Print correlation heat map
+```
+
+Figure 5 shows the crosswise correlation between each feature in our models. Most variables are independent of each other, as indicated by the light-colored squares. However, there are three areas where we detect collinearity. First, we can see that there is a fairly strong positive relationship between our variable of interest and the number of days since restaurants were reopened. There also seems to be a less strong but important positive relationship between the number of days since restaurants were reopened and the number of days since the end of face mask mandates. We are cognizant that the two state policy variables may have a collinear relationship with a state’s vaccinated population percentage, because the state is more likely to loosen social safety policies if there is a high vaccination rate within the state^[Apnews.com, ["More states ease lingering virus rules as vaccine rates rise"](https://apnews.com/article/coronavirus-pandemic-lifestyle-business-government-and-politics-health-c7e9de953e49eb42a05c0ed803272ba9)]. Despite this potential collinearity, we believe that state policy is an important variable to include in our causal models. Finally, there is a relatively high positive correlation between price and maximum capacity of a listing. We have decided to keep the maximum capacity variable because we believe it will add more detail to our models.
+
+\newpage
+
+# Statistical Models
+
+To explore our research question, we built four models to examine the impact of our key variable, vaccinated population percentage (V).
+
+Model Name | Model Code | Formula 
+--------------|---------------|:-------------:
+Restricted Model | `model_one` | $$f(T)=\beta_0+\beta_1V$$ 
+Less Restricted Model - Airbnb | `model_two` |$\begin{aligned}
+f(T) = \beta_0&+\beta_1V+\beta_2P+ \beta_3A\\
+&+\beta_4SH+\beta_5S+\beta_6PT(Hotel)\\
+&+\beta_7PT(Private)+\beta_8PT(Shared)
+\end{aligned}$
+Less Restricted Model - State Policy | `model_three` | $$f(T)=\beta_0+\beta_1V+\beta_2FM+\beta_3RS$$ 
+Full Model | `model_four` | $\begin{aligned}
+f(T) = \beta_0&+\beta_1V+\beta_2P+ \beta_3A\\
+&+\beta_4SH+\beta_5S+\beta_6PT(Hotel)\\
+&+\beta_7PT(Private)+\beta_8PT(Shared)\\
+&+\beta_9FM+\beta_{10}RS
+\end{aligned}$
+
+\
+\
+Our null hypothesis is $H_0: \beta_1 = 0$. We will reject the null hypothesis if the resultant p-value of the coefficient of our variable of interest is less than .05. 
+
+\newpage
+
+# Results\
+```{r generate models, cache=FALSE}
+model_one <- lm(availability_60 ~ administered_dose1_recip_18plus_pct, data = listings)
+model_two <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + review_scores_value + 
+                    lprice + accommodates + host_is_superhost + 
+                    room_type, data = listings)
+model_three <- lm(availability_60 ~ administered_dose1_recip_18plus_pct +
+                 date_diff_fm_end + date_diff_end_rest, data = listings)
+model_four <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + review_scores_value + accommodates +
+                    lprice + host_is_superhost + 
+                    room_type + date_diff_fm_end + date_diff_end_rest, data = listings)
+```
+
+```{r generate values for specific elements in regression models, cache=TRUE}
+model_one_p <- formattable(summary(model_one)$coefficients[2,4],digits=3)
+model_one_aR <- formatC(summary(model_one)$adj.r.squared, format = "e", digits = 3)
+
+model_two_coef <- formattable(summary(model_two)$coefficients[2,1],digits=3)
+model_two_p <- formattable(summary(model_two)$coefficients[2,4],digits=3)
+model_two_aR <- formatC(summary(model_two)$adj.r.squared, format = "f", digits = 3)
+
+model_three_coef <- formattable(summary(model_three)$coefficients[2,1],digits=2)
+model_three_p <- formattable(summary(model_three)$coefficients[2,4],digits=3)
+model_three_se <- formatC(summary(model_three)$coefficients[2,2], digits = 2)
+model_three_aR <- formatC(summary(model_three)$adj.r.squared, format = "f", digits = 3)
+
+model_four_coef <- formattable(summary(model_four)$coefficients[2,1],digits=2)
+model_four_p <- formattable(summary(model_four)$coefficients[2,4],digits=2)
+model_four_se <- formatC(summary(model_four)$coefficients[2,2], digits = 3)
+model_four_aR <- formatC(summary(model_four)$adj.r.squared, format = "f", digits = 3)
+```
+
+```{r stargazer, results = "asis", comment=NA, cache=TRUE}
+# Should you like to run the stargazer table directly from this Rmd file, please uncomment the code below. 
+
+# se.model_one = coeftest(model_one, vcov = vcovHC)[ , "Std. Error"]
+# se.model_two = coeftest(model_two, vcov = vcovHC)[ , "Std. Error"]
+# se.model_three = coeftest(model_three, vcov = vcovHC)[ , "Std. Error"]
+# se.model_four = coeftest(model_four, vcov = vcovHC)[ , "Std. Error"]
+# stargazer(model_one, model_two, model_three, model_four,
+#           type = "latex",
+#           title = "Relationship Between Airbnb Availability and Vaccinated Population Percentage",
+#           omit.stat = "f",
+#           header=FALSE,
+#           style = "default",
+#           column.labels = c("Model 1", "Model 2", "Model 3", "Model 4"),
+#           covariate.labels =
+#             c("Vaccinated Pop", "Listing Rating",
+#               "Log(Price)", "Max Capacity","Super-Host",
+#               "Property Type-Hotel", "Property Type-Private",
+#               "Property Type-Shared",
+#               "End Face Mask Mandates",
+#               "Restaurants Reopening"),
+#           font.size="small",
+#           dep.var.labels= "",
+#           dep.var.caption="Airbnb Availability",
+#           se = list(se.model_one, se.model_two, se.model_three, se.model_four),
+#           star.cutoffs = c(0.05, 0.01, 0.001),
+#           model.numbers=FALSE)
+```
+![](../src/images/complex_figures/table_1.png)
+\
+\
+Based on the model outputs, three of our four models show statistically significant coefficients for our variable of interest.
+
+\newpage
+
+## Model 1 ~ Restricted Model
+$f(T)=\beta_0+\beta_1V$\
+
+```{r, fig.cap="Model 1 Causal Graph", out.width="65%"}
+img1_path="../src/images/causal_graphs/model_1_sm.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+
+
+```{r restrictive model}
+# summary(model_one)
+```
+
+Our restricted model produced the least statistically significant result for our vaccination percentage coefficient out of all of our models. This is an important result because it tells us that despite the vast amount of observations we supplied to our model, ultimately it was unable to reject the null hypothesis with a p-value of `r model_one_p`. This result may give us reason to doubt any direct causal impact vaccinated population percentage has on Airbnb availability. However, our model also produced an adjusted $R^2$ value of `r model_one_aR`. This means that our restricted regression failed to capture well variation within features incorporated in this model. 
+
+## Model 2 ~ Less Restricted Model - Airbnb
+$f(T)=\beta_0+\beta_1V+\beta_2P+\beta_3A+\beta_4SH+\beta_5S+\beta_6PT(Hotel)+\beta_7PT(Private)+\beta_8PT(Shared)$\
+
+```{r, fig.cap="Model 2 Causal Graph", out.width="65%"}
+img1_path="../src/images/causal_graphs/model_2_sm.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+
+```{r less restrictive model - Airbnb data}
+# summary(model_two)
+# vif(model_two)
+```
+
+Model 2 produced the smallest coefficient of all of our models (`r model_two_coef`). The model successfully rejected the null hypothesis with a very highly significant p-value of `r model_two_p`. And the sign of the variables are consistent with our causal theory. However, the practical significance of our result is questionable. The coefficient tells us that, holding others constant, a 20% increase in the vaccinated population percentage will likely cause a listing’s availability to decrease by one day. Despite the very high statistical significance of Model 2, it appears that the impact of state-level vaccination percentage is very small. Additionally, the adjusted $R^2$ value is `r model_two_aR`. While this is a definite improvement from Model 1, the variables in Model 2 do not explain a significant portion of variance within our input variables. 
+
+## Model 3 ~ Less Restricted Model - State Policy
+$f(T)=\beta_0+\beta_1V+\beta_2FM+\beta_3RS$\
+
+```{r, fig.cap="Model 3 Causal Graph", out.width="65%"}
+img1_path="../src/images/causal_graphs/model_3_sm.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+
+
+```{r less restrictive model - state policy data, echo=FALSE, message=FALSE, warning=FALSE}
+# summary(model_three)
+# vif(model_three)
+```
+
+Model 3 produced the largest coefficient of all of our models (`r model_three_coef`) for the vaccination percentage variable. The model rejected the null hypothesis with a very highly significant p-value of `r model_three_p` and the robust standard error of the coefficient is `r model_three_se`. 
+
+Another important aspect to note is that the sign of the vaccination percentage coefficient changed in Model 3. This is likely due to the high amount of positive correlation between our variable of interest and the state policy variables (see Figure 5). This model is important because it suggests a potentially stronger relationship between state policy and Airbnb listing availability. Additionally, the adjusted $R^2$ value is `r model_three_aR`. While this still is an improvement from Model 1, it is much less than that of Model 2. This indicates that Model 2 is summarizing the variance within the data better than Model 3. 
+
+\newpage
+
+## Model 4 ~ Full Model
+$f(T)=\beta_0+\beta_1V+\beta_2P+\beta_3A+\beta_4SH+\beta_5S+\beta_6PT(Hotel)+\beta_7PT(Private)+\beta_8PT(Shared)+\beta_9FM+\beta_{10}RS$\
+
+```{r, fig.cap="Model 4 Causal Graph", out.width="65%"}
+img1_path="../src/images/causal_graphs/model_4_sm.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+
+
+```{r full models, echo=FALSE, message=FALSE, warning=FALSE}
+# summary(model_four)
+# vif(model_four)
+```
+
+Model 4 rejected the null hypothesis with a significant p-value of `r model_four_p`. However, it also produced the most problematic robust standard error of all of our models (`r model_four_se`) for the vaccination percentage variable coefficient (`r model_four_coef`). This means that our model is failing to capture variance specifically within our variable of interest. Interestingly, the adjusted $R^2$ value is `r model_four_aR`, which is the same as that of Model 2. While we do see a lack of improvement in adjusted $R^2$ value, by including all features, Model 4 provides the most comprehensive representation of the real world of all our models. 
+
+
+# Model Assumptions
+As the vaccinated population percentage has `r n_unique_vax_pct` unique values and the full dataset has `r n_listings_obs` listings, our model should fulfill large sample assumptions. We will discuss whether our model satisfies the large sample model assumptions as well as the additional assumptions of the Classical Linear Model (“CLM”).
+
+## Large Sample Model Assumptions
+
+### IID  
+Inside Airbnb draws listings from 28 cities of 18 states in the United States. This list includes the most popular tourist destination cities in the US. In addition, because of the vast amount of data provided for each city, we are comfortable that the listings are representative of all the listings within each city. Having said that, we believe there may be a clustering effect given that a few states account for the majority of the listings (see Appendix B). This is also consistent with AirDNA’s study result as of June 2019^[CDN, ["The Most Popular Cities for Airbnb in the U.S."](https://cdn.statcdn.com/Infographic/images/normal/18963.jpeg)].
+
+### Unique BLP/No Perfect Collinearity
+There is no perfect collinearity as no variables were dropped from the model. 
+
+
+## Additional CLM Assumptions
+
+### Linear Conditional Expectation
+To assess linear conditional expectation we evaluate a plot of the residuals vs fitted values for each model. To confirm linear conditional expectation there should be a relatively straight line at zero.
+
+```{r, fig.cap="Residuals vs Fitted Plots", fig.width=7, fig.height=7, fig.align="left", cache=TRUE}
+# Should you like to run the residuals vs fitted plots directly from this Rmd file, please uncomment the code below. 
+# par("mfcol"=c(2, 2))
+# plot(model_one, which=1, caption="Model 1")
+# plot(model_three, which=1, caption="Model 3")
+# plot(model_two, which=1, caption="Model 2")
+# plot(model_four, which=1, caption="Model 4")
+```
+
+```{r, fig.cap="Residuals vs Fitted Plots", out.width="85%"}
+img1_path="../src/images/complex_figures/figure_6.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+
+Model 3 has the most flat line at zero, with Models 2 and 4 as close seconds. Because we have fulfilled the first three assumptions of the CLM, we can be sure that the coefficients in Models 2-4 are unbiased. 
+
+\newpage
+### Homoskedasticity
+There are three methods to assess homoskedasticity in each model. First, we can leverage the residual vs fitted plots (above) to look for constant variance around each line. It appears that the variance around each line is inconsistent, giving us reason to doubt the presence of homoskedasticity. Second, we can look for a straight line in the scale-location plot (below).
+
+```{r, fig.cap="Scale-Location Plots", fig.align="left", fig.width=7, fig.height=7}
+# Should you like to run the scale-location plots directly from this Rmd file, please uncomment the code below. 
+# par("mfcol"=c(2, 2))
+# plot(model_one, which=3, caption=list("","","Model 1"))
+# plot(model_three, which=3, caption=list("","","Model 3"))
+# plot(model_two, which=3, caption=list("","","Model 2"))
+# plot(model_four, which=3, caption=list("","","Model 4"))
+```
+
+```{r, fig.cap="Scale-Location Plots", out.width="85%"}
+img1_path="../src/images/complex_figures/figure_7.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+
+It appears that Model 3 produces the flattest line of all models, with Model 1 as a close second. The lines for Models 2 and 4 seem to have a consistent bow shape. Finally, the Breusch-Pagan test is a valid statistic which tests the following null hypothesis: the data is homoskedastic. However, because our data is very large, the Breusch-Pagan test produces highly statistically significant results that are not supported by the other two assessment methods.
+
+```{r Breusch-Pagan test, comment=NA}
+# uncomment code below to view Breusch-Pagan test results
+
+# bptest(model_one)
+# bptest(model_two)
+# bptest(model_three)
+# bptest(model_four)
+```
+
+Regardless of whether homoskedasticity is truly in our model,  we can overcome any lack of homoskedasticity in the data by using robust standard errors. 
+
+### Normally Distributed Errors
+
+To assess for normally distributed errors, we can simply plot the histogram of each model’s residuals and look for a normal distribution.
+
+```{r, fig.cap="Residuals Plots", fig.width=8, fig.height=8, echo=FALSE, warning=FALSE}
+# Should you like to run the residuals plots directly from this Rmd file, please uncomment the code below. 
+# par("mfcol"=c(2, 2))
+# hist(model_one$residuals, main = "Model 1")
+# hist(model_two$residuals, main = "Model 2")
+# hist(model_three$residuals, main = "Model 3")
+# hist(model_four$residuals, main = "Model 4")
+```
+
+```{r, fig.cap="Residuals Plots", out.width="80%"}
+img1_path="../src/images/complex_figures/figure_8.png"
+img1 <- readPNG(img1_path, native = TRUE, info = TRUE)
+include_graphics(img1_path)
+```
+It appears that none of the model residuals have a particularly normal distribution. 
+
+Again, even though our models' ability to fulfill the strict assumptions of the CLM are questionable, our models take a large number of observations, allowing us to use the large sample assumptions to confirm the asymptotic properties of our model variables. 
+
+\newpage
+
+# Omitted Variables Discussion
+*See Appendix C for our imagined ‘True Model’*
+
+While we tried to include every variable available that may impact a listing’s 60 day availability, we believe there are additional variables not included that may cause our estimated coefficients for vaccinated population percentage to be biased. Please note we are using the full model coefficient (`r model_four_coef`) to assess omitted variable bias.
+
+
+## Natural Disasters (N)
+Tourists may choose to avoid certain cities if there is a high risk of extreme weather. For example, wildfires in California or hurricanes in Florida. We believe that natural disasters would increase the 60 day availability and also decrease the vaccinated population percentage. When we conduct the thought experiment, we find bias moving away from zero, suggesting that our estimated coefficient for vaccinated population percentage may be overestimating the negative impact of vaccinated population percentage on Airbnb availability. 
+
+## Gas and Flight Prices (G)
+Gas and flight prices may impede tourists' ability to travel in-state. We believe that increased gas and flight prices should increase Airbnb availability as well as decrease the vaccinated population percentage. When we conduct the thought experiment, we find bias moving away from zero, suggesting that our estimated coefficient for vaccinated population percentage may be overestimating the negative impact of vaccinated population percentage on Airbnb availability.
+
+## International COVID Restrictions (TR)
+Recently we have seen an increase in COVID-19 cases, largely due to unvaccinated populations and increasingly contagious variants. Because of this, we have seen increased COVID-19 restrictions from European countries, such as Spain, Greece and  France^[New York Times, ["The New Reality of a European Trip: ‘Things Are Going to Change’"](https://www.nytimes.com/2021/07/30/travel/europe-delta-covid-restrictions.html)]. We expect that increased international COVID-19 restrictions will decrease Airbnb availability within the United States and will increase the vaccinated population. When we conduct the thought experiment, we find bias moving away from zero, suggesting that our estimated coefficient for vaccinated population percentage may be overestimating the negative impact of vaccinated population percentage on Airbnb availability. 
+
+## Traveler Sentiment (TS)
+Due to the COVID-19 pandemic many people have felt unsafe to travel. Recently, it appears that travelers have felt increasingly pessimistic about travel safety due to the new Delta variant^[Destinationanalysts.com, ["Update on American Travel Trends & Sentiment—Week of July 26th"](https://www.destinationanalysts.com/insights-updates/)]. As travel sentiment increases, we expect less available Airbnbs and an increased vaccinated population. When we conduct the thought experiment, we find bias moving away from zero, suggesting that our estimated coefficient for vaccinated population percentage may be overestimating the negative impact of vaccinated population percentage on Airbnb availability. 
+
+## Employment (E)
+Fluctuating levels of employment is a reality that should be accounted for. It appears that employed Americans are taking less and less vacations^[Harvard Business Review, ["The Data-Driven Case for Vacation"](https://hbr.org/2016/07/the-data-driven-case-for-vacation)]. Because of this, we believe that high levels of employment will increase Airbnb availability. Additionally, we believe that those who are employed are more likely to get vaccinated. When we conduct the thought experiment, we find bias moving towards zero, suggesting that our estimated coefficient for vaccinated population percentage may be underestimating the negative impact of vaccinated population percentage on Airbnb availability. 
+
+\newpage
+
+# Conclusion
+Our study was made to explore our causal theory that a state’s vaccinated population decreases Airbnb availability with that state. Even though the majority of our models presented highly statistically significant results, the estimated coefficients produced were minute. Therefore, we are not yet confident that a causal relationship between these two variables exists.
+
+# Limitations
+
+We acknowledge there may be several limitations to our study. 
+
+First, we believe that measuring a state’s vaccinated population percentage may be too broad a unit of measurement. For example, in California there is lots of intra-state travel from San Francisco to Los Angeles, two cities with very different rates of COVID-19 vaccinations. Because we measured vaccinations on the state level, our study fails to account for the nuances of intrastate travel and may not be precise enough to accurately estimate any causal relationship within larger states. Future studies may wish to collect vaccination data on the county or city level to improve precision of measurement for our key variable of interest. 
+
+Secondly, the clustering effect within our data may violate the IID assumption, causing our study to potentially lack generalizability. Future research may wish to utilize stratified random sampling methods to gather Airbnb listings data. 
+
+Thirdly, our study was limited by our use of each listings’ `last_scraped` date to approximate the date of a listings’ bookings. We acknowledge that this was an imprecise methodology despite our best efforts. To improve the relevancy of the dates we pull for vaccinated population percentage, it would be hugely beneficial to collect data on Airbnb bookings, rather than listings. This would allow us to make a better judgement on traveler behavior when they decide to book a listing. 
+
+Fourth, we believe that the combined effect of clustered data by state and dates caused a large portion of our data to lack sufficient variation. We believe that inconsistent variance in some of our variables caused our adjusted R^2 values to be relatively small. Furthermore, the omitted variables may have more explanatory power to the outcome variables than we currently identified, this may change our model result significantly. We recommend that future researchers collect more data over a longer period of time to add more variation. to the data.
+
+Fifth, Airbnb is only one company in the entire tourism industry. Certain cities, such as Las Vegas, may favor traditional hotels over Airbnb. Furthermore, Airbnb tends to be used most frequently on the east and west coasts of the United States^[ibid]. Therefore using Airbnb data may exclude important tourism information for states in the middle and south of the US.  
+
+Finally, the study does not explicitly take into consideration the recent change of trends in Airbnb usage. According to a recent Airbnb blog, given the impact of COVID-19, Airbnb stays show increasing trends for living, working and connecting safely away from home more than tourism. If this trend applies broadly to our Airbnb data set, that would challenge our original thesis to use Airbnb availability as an indicator to tourism.
+
+Despite our inclusive results, we still believe that continued investigation of causal relationships between COVID-19 and tourism could yield important information to help the tourism industry recover from the effects of the pandemic. Furthermore, we believe it may be possible to leverage this causal relationship to encourage the tourism industry to put their support behind COVID-19 vaccination programs and other state policies. We also believe that continued study focusing on a causal relationship between COVID-19 vaccinations and state policy may be useful to lawmakers in states whose economies rely heavily on tourism. 
+
+\newpage
+
+# References
+
+AirDNA, ["How to Optimize Your Airbnb Occupancy Rate with Data Analytics"](https://www.airdna.co/blog/how-to-optimize-your-airbnb-occupancy-rate-with-data-analytics)\
+\
+Airbnb, ["Reviews for stays"](https://www.airbnb.com/help/article/13/reviews-for-stays)\
+\
+Airbnb, ["What is a Superhost?"](https://www.airbnb.com/help/article/828/what-is-a-superhost)\
+\
+AJMC, ["A Timeline of COVID-19 Vaccine Developments in 2021"](https://www.ajmc.com/view/a-timeline-of-covid-19-vaccine-developments-in-2021)
+
+Apnews.com, ["More states ease lingering virus rules as vaccine rates rise"](https://apnews.com/article/coronavirus-pandemic-lifestyle-business-government-and-politics-health-c7e9de953e49eb42a05c0ed803272ba9)
+
+Cox, ["Inside Airbnb"](http://insideairbnb.com/get-the-data.html)
+
+CDC, ["COVID-19 Vaccinations in the United States,County"](https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-County/8xkx-amqh)
+
+CDN, ["The Most Popular Cities for Airbnb in the U.S."](https://cdn.statcdn.com/Infographic/images/normal/18963.jpeg)
+
+Deane, ["2021 Airbnb Statistics: Usage, Demographics, and Revenue Growth"](https://www.stratosjets.com/blog/airbnb-statistics/)
+
+Destinationanalysts.com, ["Update on American Travel Trends & Sentiment—Week of July 26th"](https://www.destinationanalysts.com/insights-updates/)
+
+Fortune.com, ["Airbnb’s IPO filing reveals huge COVID impact"](https://fortune.com/2020/11/16/airbnb-ipo-initial-public-offering-coronavirus-impact/#:~:text=Airbnb%20revealed%20plans%20for%20an,1%2C800%20job%20cuts%20in%20May)
+
+Harvard Business Review, ["The Data-Driven Case for Vacation"](https://hbr.org/2016/07/the-data-driven-case-for-vacation)
+
+Leidman E, Duca LM, Omura JD, Proia K, Stephens JW, Sauber-Schatz EK. COVID-19 Trends Among Persons Aged 0–24 Years — United States, March 1–December 12, 2020. MMWR Morb Mortal Wkly Rep 2021;70:88–94. DOI: http://dx.doi.org/10.15585/mmwr.mm7003e1external icon. [link](https://www.cdc.gov/mmwr/volumes/70/wr/mm7003e1.htm)
+
+New York Times, ["The New Reality of a European Trip: ‘Things Are Going to Change’"](https://www.nytimes.com/2021/07/30/travel/europe-delta-covid-restrictions.html)
+
+Raifman, Julia, Nocka, Kristen, Jones, David, Bor, Jacob, Lipson, Sarah, Jay, Jonathan, … Galea, Sandro. COVID-19 US State Policy Database. Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributor], 2020-11-02. https://doi.org/10.3886/E119446V40 [link](https://www.openicpsr.org/openicpsr/project/119446/version/V40/view)
+
+
+\newpage
+
+# (APPENDIX) Appendix {-}
+
+# Codebook
+Variable Name | Variable Code | Description | Data Type 
+--------------|---------------|-------------|-----------
+Airbnb Availability (T) | `availability_60` | The availability of the listing days in the future as determined by the calendar | Numeric (int)
+Vaccinated Population (V) | `administered_dose1- recip_18plus_pct` | Vaccination rate of the state 14 days prior to the Airbnb scraped date | Numeric (%)
+Listing Rating (R) | `review_scores_value` | Ratings from guests | Numeric (int)
+Price Per Night (P) | `lprice` | Log of daily price in USD | Numeric (float)
+Super-Host (SH) | `host_is_superhost` | Whether the host is a superhost | Boolean
+Property Type (PT) | `room_type` | Entire home/Apt, Private Room, Shared Room or Hotels | Categorical 
+Maximum Capacity (A) | `accommodates` | Maximum capacity of listing | Numeric (int)
+Number of Days Since the End of Face Mask Mandates (FM) | `date_diff_fm_end` | Days between the listing’s last scrapped date and face mask policy removal date | Numeric (int)
+Number of Days Since Restaurants Reopened (RS) | `date_diff_end_rest` | Days between the listing’s last scrapped date and restaurant open date | Numeric (int)
+
+\newpage
+
+# Airbnb Listings by State
+```{r, fig.cap=" Number of Airbnb Listings by State", fig.width=5, fig.height=6, cache=TRUE}
+# Create dataframe with counts for each review_score_value
+listings_dist <- listings %>%
+  count(state)
+
+# Generate Bar Plot
+listings_by_state_bplot <- ggplot(data=listings_dist, aes(x=reorder(state,n), y= n)) +
+  geom_bar(stat="identity", fill="purple") +
+  labs(
+    title = "Number of Airbnb Listings by State",
+    x = "",
+    y = "# of Listings") +
+  theme_bw() +
+  theme(text=element_text(family="Times")) +
+  theme(title = element_text(size = 11, face="bold")) +
+  theme(axis.title = element_text(size = 10.5)) +
+  theme(axis.text.x = element_text(size = 9.5)) +
+  theme(axis.text.y = element_text(size = 9.5)) +
+  coord_flip()
+listings_by_state_bplot + scale_y_continuous(expand=c(0,0,0,500))
+```
+\newpage
+
+# True Model?
+![](../src/images/causal_graphs/True_Model.png){width=75%}

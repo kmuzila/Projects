@@ -1,0 +1,255 @@
+---
+title: "Lab2_Prelim_Analysis"
+author: "HJG"
+date: "7/31/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, message = FALSE}
+library(tidyverse)
+library(ggplot2) 
+library(dplyr)
+library(lmtest)
+library(zoo)
+library(sandwich)
+library(stargazer)
+library(stringr)
+library(readxl)
+library(car)
+library(reshape2)
+library(gridExtra)
+```
+
+# Does a higher vaccinated state population percentage decrease airbnb availability within popular tourist destinations within that state?
+```{r read clean data file}
+data <- read_csv("src/data/processed/final_listings.csv")
+
+glimpse(data)
+summary(data)
+spec(data)
+```
+
+
+```{r EDA Outcome Variable - availability_60}
+n_0_availability_60 <- format(sum(data$availability_60==0), big.mark=",")
+
+# Generate histogram of distribution of Airbnb availability over the next 60 days.
+availability_60_histogram <- data %>% 
+  ggplot(aes(x=availability_60)) + geom_histogram(binwidth = 3, color='black', fill="purple")  +
+  labs(
+    title    = sprintf('%s Airbnb listings have 0 availability for the next 60 days', n_0_availability_60),
+    x        = 'Airbnb Availability over the next 60 days', 
+    y        = 'Count of Observations')
+
+availability_60_histogram
+```
+
+```{r EDA Main Input Variable - administered_dose1_recip_18plus_pct}
+# Generate histogram of distribution of % vaccinated
+administered_dose1_recip_18plus_pct_histogram <- data %>% 
+  ggplot(aes(x=administered_dose1_recip_18plus_pct)) + geom_histogram(binwidth = 1, color='black', fill="purple")  +
+  labs(
+    title    = 'administered_dose1_recip_18plus_pct',
+    x        = 'administered_dose1_recip_18plus_pct', 
+    y        = 'Count of Observations')
+administered_dose1_recip_18plus_pct_histogram
+```
+
+```{r EDA Outcome Variable - number_of_reviews}
+# Generate histogram of distribution of minimum_nights
+number_of_reviews_histogram <- data %>% 
+  ggplot(aes(x=number_of_reviews)) + geom_histogram(binwidth = 10, color='black', fill="purple")  +
+  labs(
+    title    = 'number_of_reviews',
+    x        = 'number_of_reviews', 
+    y        = 'Count of Observations')
+number_of_reviews_histogram
+```
+
+```{r EDA Input Variable - review_scores_value}
+# Create dataframe with counts for each review_score_value
+review_scores_value_dist <- data %>% 
+  count(review_scores_value)
+
+# Generate Bar Plot
+review_scores_value_dist$review_scores_value<-as.factor(review_scores_value_dist$review_scores_value)
+ggplot(data=review_scores_value_dist, aes(x=review_scores_value, y=n)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  labs(
+    title    = 'review_scores_value',
+    x        = 'review_scores_value', 
+    y        = 'Count of Observations')+
+  geom_text(aes(label=n), vjust=-0.3, color="black", size=3.5)+
+  theme_minimal()
+```
+
+```{r EDA Input Variable - price}
+require(gridExtra)
+# Generate histogram of distribution of price
+price_histogram <- data %>% 
+  ggplot(aes(x=price)) + geom_histogram(binwidth = 100, color='black', fill="purple")  +
+  labs(
+    title    = 'Price',
+    x        = 'Price', 
+    y        = 'Count of Observations')
+
+# Generate histogram of distribution of log base 10 of price
+lprice_histogram <- data %>% 
+  ggplot(aes(x=lprice)) + geom_histogram(binwidth = .1, color='black', fill="purple")  +
+  labs(
+    title    = 'Log Base 10 of Price',
+    x        = 'Log Base 10 of Price', 
+    y        = 'Count of Observations')
+
+grid.arrange(price_histogram, lprice_histogram, ncol=2)
+```
+
+```{r EDA Input Variable - accommodates}
+# Generate histogram of distribution of price
+accommodates_histogram <- data %>% 
+  ggplot(aes(x=accommodates)) + geom_histogram(binwidth = 1, color='black', fill="purple")  +
+  labs(
+    title    = 'accommodates',
+    x        = 'accommodates', 
+    y        = 'Count of Observations')
+accommodates_histogram
+```
+
+```{r EDA Input Variable - room_type}
+# Create dataframe with counts for each review_score_value
+room_type_dist <- data %>% 
+  count(room_type)
+
+# Generate Bar Plot
+room_type_dist$room_type<-as.factor(room_type_dist$room_type)
+ggplot(data=room_type_dist, aes(x=room_type, y=n)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  labs(
+    title    = 'room_type',
+    x        = 'room_type', 
+    y        = 'Count of Observations')+
+  geom_text(aes(label=n), vjust=-0.3, color="black", size=3.5)+
+  theme_minimal()
+```
+
+```{r run correlation matrix for selec variables}
+keeps <- c("review_scores_value", "number_of_reviews", "lprice", "accommodates", "administered_dose1_recip_18plus_pct", "date_diff_fm_end", "date_diff_end_rest")
+
+data_1 <- data[keeps]
+data_1.corr <- cor(data_1)
+cor <- round(data_1.corr, 2)
+cor
+
+# Get upper triangle of the correlation matrix
+get_upper_tri <- function(cormat){
+  cormat[lower.tri(cormat)]<- NA
+  return(cormat)
+  }
+upper_tri <- get_upper_tri(cor)
+
+melted_cormat <- melt(upper_tri, na.rm = TRUE)
+
+# Heatmap
+heat_map <- ggplot(data = melted_cormat, aes(Var2, Var1, fill = value)) +
+ geom_tile(color = "white") +
+    labs(title    = "Correlation Matrix", x='', y='') +
+  
+ scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+   name="Pearson\nCorrelation") +
+  theme_minimal()+ 
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+    size = 10, hjust = 1)) +
+ coord_fixed()
+```
+
+```{r, fig.width=7, fig.height=7}  
+heat_map
+```
+
+```{r restrictive model}
+
+# vaccination state data varies by last scraped date and the state of the listing
+model_one <- lm(availability_60 ~ administered_dose1_recip_18plus_pct, data = data)
+summary(model_one)
+# I think the coefficient for administered_dose1_recip_18plus_pct is saying that when you increase the administered_dose1_recip_18plus_pct_2 by 1%, we will see a ~ -.3 change in airbnb availability over the next 60 days. 
+```
+
+```{r less restrictive model - w Airbnb data}
+model_two <- lm(availability_60 ~ c, data = data)
+
+summary(model_two)
+vif(model_two)
+```
+
+```{r less restrictive model - w state policy data}
+model_three <- lm(availability_60 ~ administered_dose1_recip_18plus_pct +
+                 date_diff_fm_end + date_diff_end_rest, data = data)
+summary(model_three)
+vif(model_three)
+```
+
+
+```{r full models}
+model_four <- lm(availability_60 ~ administered_dose1_recip_18plus_pct + review_scores_value + 
+                    lprice + accommodates + host_is_superhost + 
+                    room_type + date_diff_fm_end + date_diff_end_rest, data = data)
+
+summary(model_four)
+vif(model_four)
+```
+
+```{r sweet stargazer, warning=FALSE}
+se.model_one = coeftest(model_one, vcov = vcovHC)[ , "Std. Error"]
+se.model_two = coeftest(model_two, vcov = vcovHC)[ , "Std. Error"]
+se.model_three = coeftest(model_three, vcov = vcovHC)[ , "Std. Error"]
+se.model_four = coeftest(model_four, vcov = vcovHC)[ , "Std. Error"]
+
+stargazer(model_one, model_two, model_three, model_four, type = "text", omit.stat = "f",
+          se = list(se.model_one, se.model_two, se.model_three, se.model_four),
+          star.cutoffs = c(0.05, 0.01, 0.001), title = "Table 1: The relationship between airbnb availability and the percent vaccinated state population")
+```
+
+Check on CLM assumptions for model_two
+
+> 1. **IID Sampling:** 
+
+> 2. **No Perfect Colinearity:** 
+Yes, there is no perfect colinearity in my model variables. I can tell because none of my variables were dropped in my regression model and I did not recieve any error messages. 
+
+> 3. **Linear Conditional Expectation:** 
+To assess linear conditional expectation I evaluate a plot of the residuals vs fitted values. To confirm linear conditional expectation I should see a straight line at zero. 
+
+```{r linear conditional expectation}
+plot(model_one, which=1)
+plot(model_two, which=1)
+plot(model_three, which=1)
+plot(model_four, which=1)
+```
+> 4. **Homoskedastic Errors:** 
+I looked for homoskedasticity using three methods. First, I use the residual vs fitted plot (above) to look for constant variance around the line. Second, I can look for a straight line in the scale-location plot (below). Finally, I can use the breusch-pagan test to test the following null hypothesis: the data is homoskedastic. Additionally, I can overcome any lack of homoskedasticity in my data by using robust standard errors. 
+
+
+```{r code and plots assessing error variance}
+plot(model_one, which=3)
+plot(model_two, which=3)
+plot(model_three, which=3)
+plot(model_four, which=3)
+
+bptest(model_one)
+bptest(model_two)
+bptest(model_three)
+bptest(model_four)
+```
+```{r code and plots assessing normally distributed errors}
+hist(model_one$residuals)
+hist(model_two$residuals)
+hist(model_three$residuals)
+hist(model_four$residuals)
+
+```
+
