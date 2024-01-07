@@ -1,0 +1,250 @@
+state,city,lat,long,state_name,country
+AL,Birmingham,33.525,-86.813,Alabama,United States
+AL,Montgomery,32.3617,-86.2792,Alabama,United States
+AL,Mobile,30.6889,-88.0448,Alabama,United States
+AL,Huntsville,34.7295,-86.5853,Alabama,United States
+AL,Tuscaloosa,33.2065,-87.5346,Alabama,United States
+AK,Anchorage,61.2166,-149.8996,Alaska,United States
+AK,Fairbanks,64.8436,-147.7231,Alaska,United States
+AK,Juneau,58.3019,-134.4197,Alaska,United States
+AK,Sitka,57.0531,-135.33,Alaska,United States
+AK,Ketchikan,55.35,-131.6733,Alaska,United States
+AZ,Phoenix,33.45,-112.0667,Arizona,United States
+AZ,Tucson,32.2217,-110.9264,Arizona,United States
+AZ,Mesa,33.4152,-111.8315,Arizona,United States
+AZ,Chandler,33.3023,-111.8401,Arizona,United States
+AZ,Glendale,33.5386,-112.1837,Arizona,United States
+AR,Little Rock,34.7361,-92.3311,Arkansas,United States
+AR,Fort Smith,35.3686,-94.3986,Arkansas,United States
+AR,North Little Rock,34.7808,-92.2569,Arkansas,United States
+AR,Fayetteville,36.0764,-94.1608,Arkansas,United States
+AR,Springdale,36.1814,-94.1458,Arkansas,United States
+CA,Los Angeles,34.0522,-118.2433,California,United States
+CA,San Diego,32.715,-117.1625,California,United States
+CA,San Jose,37.3333,-121.9,California,United States
+CA,San Francisco,37.7749,-122.4194,California,United States
+CA,Fresno,36.7317,-119.7859,California,United States
+CO,Denver,39.7392,-104.9903,Colorado,United States
+CO,Colorado Springs,38.8352,-104.8198,Colorado,United States
+CO,Aurora,39.6958,-104.8081,Colorado,United States
+CO,Fort Collins,40.5592,-105.0781,Colorado,United States
+CO,Lakewood,39.7064,-105.1028,Colorado,United States
+CT,Bridgeport,41.1792,-73.1895,Connecticut,United States
+CT,New Haven,41.31,-72.9236,Connecticut,United States
+CT,Hartford,41.7658,-72.6734,Connecticut,United States
+CT,Stamford,41.0519,-73.5395,Connecticut,United States
+CT,Waterbury,41.5543,-73.0431,Connecticut,United States
+DE,Wilmington,39.7458,-75.5467,Delaware,United States
+DE,Dover,39.1619,-75.5267,Delaware,United States
+DE,Newark,40.7242,-74.1726,Delaware,United States
+DE,Middletown,41.5622,-72.6508,Delaware,United States
+FL,Jacksonville,30.3369,-81.6614,Florida,United States
+FL,Miami,25.7751,-80.1947,Florida,United States
+FL,Tampa,27.9474,-82.4588,Florida,United States
+FL,St. Petersburg,27.7731,-82.64,Florida,United States
+FL,Orlando,28.5383,-81.3789,Florida,United States
+GA,Atlanta,33.7485,-84.3915,Georgia,United States
+GA,Augusta,33.4667,-81.9667,Georgia,United States
+GA,Columbus,39.9833,-82.9833,Georgia,United States
+GA,Savannah,32.0167,-81.1167,Georgia,United States
+GA,Athens,33.95,-83.3833,Georgia,United States
+HI,Honolulu,21.3099,-157.8582,Hawaii,United States
+HI,Hilo,19.7056,-155.0858,Hawaii,United States
+HI,Kailua,21.3975,-157.7394,Hawaii,United States
+HI,Kapolei,21.3347,-158.0808,Hawaii,United States
+HI,Kaneohe,21.4092,-157.7992,Hawaii,United States
+ID,Boise,43.6158,-116.2016,Idaho,United States
+ID,Nampa,43.5747,-116.5636,Idaho,United States
+ID,Meridian,43.6142,-116.3989,Idaho,United States
+ID,Idaho Falls,43.5,-112.0333,Idaho,United States
+ID,Pocatello,42.8752,-112.4473,Idaho,United States
+IL,Chicago,41.8832,-87.6324,Illinois,United States
+IL,Aurora,41.7639,-88.29,Illinois,United States
+IL,Rockford,42.2594,-89.0644,Illinois,United States
+IL,Joliet,41.5206,-88.1506,Illinois,United States
+IL,Naperville,41.7481,-88.1656,Illinois,United States
+IN,Indianapolis,39.791,-86.148,Indiana,United States
+IN,Fort Wayne,41.0775,-85.1375,Indiana,United States
+IN,Evansville,37.9757,-87.5699,Indiana,United States
+IN,South Bend,41.6725,-86.2553,Indiana,United States
+IN,Hammond,41.6046,-87.5089,Indiana,United States
+IA,Des Moines,41.5908,-93.6208,Iowa,United States
+IA,Cedar Rapids,41.9831,-91.6686,Iowa,United States
+IA,Davenport,41.5431,-90.5908,Iowa,United States
+IA,Sioux City,42.4981,-96.3956,Iowa,United States
+IA,Waterloo,42.4924,-92.3462,Iowa,United States
+KS,Wichita,37.6889,-97.3361,Kansas,United States
+KS,Overland Park,38.9822,-94.6708,Kansas,United States
+KS,Kansas City,39.1067,-94.6764,Kansas,United States
+KS,Topeka,39.0558,-95.6894,Kansas,United States
+KS,Olathe,38.8835,-94.8182,Kansas,United States
+KY,Louisville,38.25,-85.7667,Kentucky,United States
+KY,Lexington,38.0297,-84.4947,Kentucky,United States
+KY,Bowling Green,36.9817,-86.4444,Kentucky,United States
+KY,Owensboro,37.7727,-87.111,Kentucky,United States
+KY,Covington,39.065,-84.5097,Kentucky,United States
+LA,New Orleans,29.9518,-90.0746,Louisiana,United States
+LA,Baton Rouge,30.4495,-91.0934,Louisiana,United States
+LA,Shreveport,32.5147,-93.7472,Louisiana,United States
+LA,Lafayette,30.2213,-92.0188,Louisiana,United States
+LA,Lake Charles,30.2147,-93.2086,Louisiana,United States
+ME,Portland,43.6592,-70.2565,Maine,United States
+ME,Lewiston,44.0975,-70.1925,Maine,United States
+ME,Bangor,44.8036,-68.7703,Maine,United States
+ME,South Portland,43.6317,-70.2728,Maine,United States
+ME,Auburn,44.0938,-70.2311,Maine,United States
+MD,Baltimore,39.2833,-76.6167,Maryland,United States
+MD,Frederick,39.4142,-77.4109,Maryland,United States
+MD,Rockville,39.0836,-77.1483,Maryland,United States
+MD,Gaithersburg,39.1319,-77.2264,Maryland,United States
+MD,Bowie,38.9435,-76.7303,Maryland,United States
+MA,Boston,42.3581,-71.0636,Massachusetts,United States
+MA,Worcester,42.2667,-71.8,Massachusetts,United States
+MA,Springfield,42.1124,-72.5475,Massachusetts,United States
+MA,Lowell,42.6394,-71.3147,Massachusetts,United States
+MA,Cambridge,42.3652,-71.105,Massachusetts,United States
+MI,Detroit,42.3329,-83.0478,Michigan,United States
+MI,Grand Rapids,42.9655,-85.6702,Michigan,United States
+MI,Warren,42.5214,-83.0202,Michigan,United States
+MI,Sterling Heights,42.5803,-83.0303,Michigan,United States
+MI,Lansing,42.7336,-84.5539,Michigan,United States
+MN,Minneapolis,44.9833,-93.2667,Minnesota,United States
+MN,Saint Paul,44.9437,-93.0943,Minnesota,United States
+MN,Rochester,43.1656,-77.6114,Minnesota,United States
+MN,Duluth,46.8,-92.1,Minnesota,United States
+MN,Bloomington,44.8336,-93.31,Minnesota,United States
+MS,Jackson,32.2989,-90.1847,Mississippi,United States
+MS,Gulfport,30.3698,-89.0915,Mississippi,United States
+MS,Hattiesburg,31.3265,-89.2897,Mississippi,United States
+MS,Southaven,34.9919,-90.008,Mississippi,United States
+MS,Biloxi,30.4119,-88.9278,Mississippi,United States
+MO,Kansas City,39.0997,-94.5783,Missouri,United States
+MO,St. Louis,38.627,-90.1994,Missouri,United States
+MO,Springfield,37.195,-93.2861,Missouri,United States
+MO,Independence,39.0797,-94.4067,Missouri,United States
+MO,Columbia,38.9516,-92.3286,Missouri,United States
+MT,Billings,45.7867,-108.5372,Montana,United States
+MT,Missoula,46.8625,-114.0117,Montana,United States
+MT,Great Falls,47.5036,-111.2864,Montana,United States
+MT,Bozeman,45.6793,-111.0466,Montana,United States
+MT,Butte,42.9117,-98.8469,Montana,United States
+NE,Omaha,41.25,-96,Nebraska,United States
+NE,Lincoln,40.8136,-96.7026,Nebraska,United States
+NE,Bellevue,41.1511,-95.9003,Nebraska,United States
+NE,Grand Island,40.9222,-98.3581,Nebraska,United States
+NE,Kearney,40.7008,-99.0811,Nebraska,United States
+NV,Las Vegas,36.1691,-115.1406,Nevada,United States
+NV,Henderson,36.0292,-115.0253,Nevada,United States
+NV,North Las Vegas,36.1959,-115.1146,Nevada,United States
+NV,Reno,39.5272,-119.8219,Nevada,United States
+NV,Sparks,39.5544,-119.7356,Nevada,United States
+NH,Manchester,42.9909,-71.4631,New Hampshire,United States
+NH,Nashua,42.7575,-71.4644,New Hampshire,United States
+NH,Concord,43.2067,-71.5381,New Hampshire,United States
+NH,Derry,42.8806,-71.3272,New Hampshire,United States
+NH,Rochester,43.3038,-70.9757,New Hampshire,United States
+NJ,Newark,40.7242,-74.1726,New Jersey,United States
+NJ,Jersey City,40.714,-74.071,New Jersey,United States
+NJ,Paterson,40.9147,-74.1628,New Jersey,United States
+NJ,Elizabeth,40.6619,-74.2117,New Jersey,United States
+NJ,Edison,40.504,-74.3494,New Jersey,United States
+NM,Albuquerque,35.1107,-106.61,New Mexico,United States
+NM,Las Cruces,32.3144,-106.7789,New Mexico,United States
+NM,Rio Rancho,35.2861,-106.6706,New Mexico,United States
+NM,Santa Fe,35.6672,-105.9644,New Mexico,United States
+NM,Roswell,33.3931,-104.5228,New Mexico,United States
+NY,New York,40.713,-74.0072,#FIELD!,United States
+NY,Buffalo,42.8877,-78.8794,New York,United States
+NY,Rochester,43.1656,-77.6114,New York,United States
+NY,Yonkers,40.9308,-73.8983,New York,United States
+NY,Syracuse,43.0469,-76.1444,New York,United States
+NC,Charlotte,35.2238,-80.8411,North Carolina,United States
+NC,Raleigh,35.7806,-78.6389,North Carolina,United States
+NC,Greensboro,36.08,-79.8194,North Carolina,United States
+NC,Winston-Salem,36.1028,-80.2605,North Carolina,United States
+NC,Durham,35.9886,-78.9072,North Carolina,United States
+ND,Fargo,46.877,-96.7846,North Dakota,United States
+ND,Bismarck,46.8133,-100.779,North Dakota,United States
+ND,Grand Forks,47.9257,-97.0361,North Dakota,United States
+ND,Minot,48.2355,-101.2961,North Dakota,United States
+ND,West Fargo,46.8717,-96.895,North Dakota,United States
+OH,Columbus,39.9833,-82.9833,Ohio,United States
+OH,Cleveland,41.4822,-81.6697,Ohio,United States
+OH,Cincinnati,39.1037,-84.5136,Ohio,United States
+OH,Toledo,41.6656,-83.5753,Ohio,United States
+OH,Akron,41.0731,-81.5178,Ohio,United States
+OK,Oklahoma City,35.4822,-97.535,Oklahoma,United States
+OK,Tulsa,36.1314,-95.9372,Oklahoma,United States
+OK,Norman,35.22,-97.44,Oklahoma,United States
+OK,Broken Arrow,36.0364,-95.7836,Oklahoma,United States
+OK,Lawton,34.6064,-98.3968,Oklahoma,United States
+OR,Portland,45.52,-122.6819,Oregon,United States
+OR,Eugene,44.0522,-123.0912,Oregon,United States
+OR,Salem,44.939,-123.0393,Oregon,United States
+OR,Gresham,45.5036,-122.4394,Oregon,United States
+OR,Hillsboro,45.5228,-122.9897,Oregon,United States
+PA,Philadelphia,39.95,-75.1667,Pennsylvania,United States
+PA,Pittsburgh,40.4422,-79.995,Pennsylvania,United States
+PA,Allentown,40.6028,-75.4698,Pennsylvania,United States
+PA,Erie,42.1296,-80.0852,Pennsylvania,United States
+PA,Reading,40.3417,-75.9264,Pennsylvania,United States
+RI,Providence,41.8245,-71.4127,Rhode Island,United States
+RI,Warwick,41.6987,-71.4602,Rhode Island,United States
+RI,Cranston,41.779,-71.4358,Rhode Island,United States
+RI,Pawtucket,41.8756,-71.3761,Rhode Island,United States
+RI,East Providence,41.8136,-71.37,Rhode Island,United States
+SC,Columbia,34.0093,-81.0371,South Carolina,United States
+SC,Charleston,32.7831,-79.9344,South Carolina,United States
+SC,North Charleston,32.8853,-80.0169,South Carolina,United States
+SC,Mount Pleasant,32.7904,-79.8765,South Carolina,United States
+SC,Rock Hill,34.9381,-81.0261,South Carolina,United States
+SD,Sioux Falls,43.5473,-96.7313,South Dakota,United States
+SD,Rapid City,44.0831,-103.2244,South Dakota,United States
+SD,Aberdeen,45.4647,-98.4864,South Dakota,United States
+SD,Brookings,44.3064,-96.7881,South Dakota,United States
+SD,Watertown,44.9033,-97.1206,South Dakota,United States
+TN,Memphis,35.1174,-89.9711,Tennessee,United States
+TN,Nashville,36.1667,-86.7833,Tennessee,United States
+TN,Knoxville,35.9626,-83.9167,Tennessee,United States
+TN,Chattanooga,35.0456,-85.2672,Tennessee,United States
+TN,Clarksville,36.5308,-87.3598,Tennessee,United States
+TX,Houston,29.7628,-95.3831,Texas,United States
+TX,San Antonio,29.4167,-98.5,Texas,United States
+TX,Dallas,32.7758,-96.7967,Texas,United States
+TX,Austin,30.265,-97.7466,Texas,United States
+TX,Fort Worth,32.7499,-97.3303,Texas,United States
+UT,Salt Lake City,40.75,-111.8833,Utah,United States
+UT,West Valley City,40.6885,-111.958,Utah,United States
+UT,Provo,40.2351,-111.6622,Utah,United States
+UT,West Jordan,40.6095,-111.9799,Utah,United States
+UT,Orem,40.2969,-111.6945,Utah,United States
+VT,Burlington,44.4758,-73.2119,Vermont,United States
+VT,Essex,44.5019,-73.0939,Vermont,United States
+VT,South Burlington,44.4519,-73.1817,Vermont,United States
+VT,Colchester,44.5419,-73.1967,Vermont,United States
+VT,Rutland,43.6038,-73.0154,Vermont,United States
+VA,Virginia Beach,36.8529,-75.978,Virginia,United States
+VA,Norfolk,36.8508,-76.2859,Virginia,United States
+VA,Chesapeake,36.7682,-76.2875,Virginia,United States
+VA,Richmond,37.5408,-77.4339,Virginia,United States
+VA,Newport News,37.0871,-76.473,Virginia,United States
+WA,Seattle,47.6032,-122.3303,Washington,United States
+WA,Spokane,47.6589,-117.425,Washington,United States
+WA,Tacoma,47.2414,-122.4594,Washington,United States
+WA,Vancouver,45.6333,-122.6,Washington,United States
+WA,Bellevue,47.6137,-122.1909,Washington,United States
+WV,Charleston,38.3472,-81.6333,West Virginia,United States
+WV,Huntington,38.4208,-82.4236,West Virginia,United States
+WV,Parkersburg,39.2661,-81.5422,West Virginia,United States
+WV,Morgantown,39.6298,-79.9559,West Virginia,United States
+WV,Wheeling,40.0639,-80.722,West Virginia,United States
+WI,Milwaukee,43.05,-87.95,Wisconsin,United States
+WI,Madison,43.067,-89.4,Wisconsin,United States
+WI,Green Bay,44.5133,-88.0133,Wisconsin,United States
+WI,Kenosha,42.5822,-87.8456,Wisconsin,United States
+WI,Racine,42.7261,-87.8058,Wisconsin,United States
+WY,Cheyenne,41.1402,-104.8188,Wyoming,United States
+WY,Casper,42.8347,-106.325,Wyoming,United States
+WY,Laramie,41.3167,-105.5833,Wyoming,United States
+WY,Gillette,44.2828,-105.5053,Wyoming,United States
+WY,Rock Springs,41.5908,-109.2225,Wyoming,United States
